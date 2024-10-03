@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { Box, Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import lightTheme from '../../utils/theme';
 import darkTheme from '../../utils/theme2';
-import Header from '../../components/layout/Header';
-import Footer from '../../components/layout/Footer';
+import Header from './Header';
+import Footer from './Footer';
+
 
 function Layout() {
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        const savedMode = Cookies.get('darkMode');
+        return savedMode === 'true';
+    });
+
+    useEffect(() => {
+        Cookies.set('darkMode', darkMode.toString(), { expires: 365 });
+    }, [darkMode]);
+
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
     };
+
     return (
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
             <CssBaseline />

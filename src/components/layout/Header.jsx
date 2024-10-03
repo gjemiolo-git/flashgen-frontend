@@ -13,8 +13,8 @@ function Header({ darkMode, toggleDarkMode }) {
                 <Typography
                     variant="h6"
                     noWrap
-                    component="a"
-                    href="/"
+                    component={RouterLink}
+                    to="/"
                     sx={{
                         mr: 2,
                         display: { xs: 'none', md: 'flex' },

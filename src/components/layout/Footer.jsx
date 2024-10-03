@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Container, Typography, Link } from '@mui/material';
+import { Box, Container, Typography, Link as MuiLink } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
 function Footer() {
     return (
@@ -20,17 +21,17 @@ function Footer() {
                     © {new Date().getFullYear()} FlashGen - Smart Flashcard Generator
                 </Typography>
                 <Typography variant="body2" align="center" color="text.secondary">
-                    <Link color="inherit" href="/privacy">
+                    <MuiLink component={RouterLink} to="/privacy" color="inherit">
                         Privacy Policy
-                    </Link>
+                    </MuiLink>
                     {' | '}
-                    <Link color="inherit" href="/terms">
+                    <MuiLink component={RouterLink} to="/terms" color="inherit">
                         Terms of Service
-                    </Link>
+                    </MuiLink>
                     {' | '}
-                    <Link color="inherit" href="/about">
+                    <MuiLink component={RouterLink} to="/about" color="inherit">
                         About Us
-                    </Link>
+                    </MuiLink>
                 </Typography>
             </Container>
         </Box>
