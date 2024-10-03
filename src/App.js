@@ -6,7 +6,9 @@ import { router } from './constants/router/router';
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+    </>
   )
 }
 

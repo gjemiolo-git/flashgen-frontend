@@ -10,7 +10,6 @@ import Layout from "../../components/layout/Layout";
 import PrivateRoute from "../../components/PrivateRoute";
 import { Fragment } from "react";
 
-
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>

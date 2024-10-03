@@ -9,7 +9,7 @@ function PrivacyPolicy() {
                 Privacy Policy
             </Typography>
             <Typography component="p" sx={{ mb: 2 }}>
-                Your privacy is important to us. It is FlashGen's policy to respect your privacy regarding any information we may collect from you across our website.
+                Your privacy is important to us. It is {process.env.REACT_APP_NAME}'s policy to respect your privacy regarding any information we may collect from you across our website.
             </Typography>
             <Typography component="p" sx={{ mb: 2 }}>
                 We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we're collecting it and how it will be used.

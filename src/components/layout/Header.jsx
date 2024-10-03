@@ -26,7 +26,7 @@ function Header({ darkMode, toggleDarkMode }) {
                         flexGrow: 1,
                     }}
                 >
-                    FlashGen
+                    {process.env.REACT_APP_NAME}
                 </Typography>
                 <Button color="inherit" component={RouterLink} to="/">
                     Home

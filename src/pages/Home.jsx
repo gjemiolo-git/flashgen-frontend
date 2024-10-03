@@ -34,14 +34,14 @@ function Home() {
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                             <FlashOnIcon sx={{ fontSize: 40, mr: 1 }} color="primary" />
                             <Typography variant={isMobile ? "h3" : "h2"} component="h1">
-                                FlashGen
+                                {process.env.REACT_APP_NAME}
                             </Typography>
                         </Box>
                         <Typography variant={isMobile ? "h6" : "h5"} component="h2" gutterBottom>
                             Generate Smart Flashcards in Seconds
                         </Typography>
                         <Typography variant="body1" gutterBottom sx={{ mb: 4 }}>
-                            FlashGen uses advanced AI to create personalized flashcards for any topic.
+                            {process.env.REACT_APP_NAME} uses advanced AI to create personalized flashcards for any topic.
                             Boost your learning efficiency, retain information better, and ace your exams with ease.
                         </Typography>
                         <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
@@ -65,7 +65,7 @@ function Home() {
                             </Button>
                         </Box>
                         <Typography variant="h6" gutterBottom>
-                            Why FlashGen?
+                            Why {process.env.REACT_APP_NAME}?
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                             <SchoolIcon sx={{ mr: 1 }} color="primary" />

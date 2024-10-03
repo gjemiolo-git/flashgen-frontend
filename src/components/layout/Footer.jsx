@@ -18,7 +18,7 @@ function Footer() {
         >
             <Container maxWidth="sm">
                 <Typography variant="body1" align="center">
-                    © {new Date().getFullYear()} FlashGen - Smart Flashcard Generator
+                    © {new Date().getFullYear()} {process.env.REACT_APP_NAME} - Smart Flashcard Generator
                 </Typography>
                 <Typography variant="body2" align="center" color="text.secondary">
                     <MuiLink component={RouterLink} to="/privacy" color="inherit">
