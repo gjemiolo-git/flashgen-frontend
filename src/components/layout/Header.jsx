@@ -5,9 +5,15 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 
 function Header({ darkMode, toggleDarkMode }) {
-    const user = useSelector((state) => state.auth.user) !== null;
+    const user = useSelector((state) => state.auth.user);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        setIsAuthenticated(user !== null);
+    }, [user]);
     return (
         <AppBar position="static">
             <Toolbar>
@@ -39,7 +45,7 @@ function Header({ darkMode, toggleDarkMode }) {
                 <Button color="inherit" component={RouterLink} to="/library">
                     Library
                 </Button>
-                {!user ? (
+                {!isAuthenticated ? (
                     <>
                         <Button color="inherit" component={RouterLink} to="/login">
                             Login

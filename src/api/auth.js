@@ -16,9 +16,9 @@ export async function onLogin(loginData) {
 }
 
 export async function onLogout() {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/logout`);
+    return await axios.post(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/logout`);
 }
 
 export async function fetchProtectedInfo() {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/protected`);
+    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/aduth/protected`);
 }
