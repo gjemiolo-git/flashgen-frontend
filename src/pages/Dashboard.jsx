@@ -9,9 +9,11 @@ import Grid from '@mui/material/Grid2';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchProtectedInfo } from '../api/auth';
 import Spinner from '../components/Spinner';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../redux/slices/authSlice';
 
 export default function Dashboard() {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [protectedData, setProtectedData] = useState('');
@@ -28,8 +30,9 @@ export default function Dashboard() {
                     setLoading(false);
                 }
             } catch (error) {
-                console.log(error);
+                //console.log();
                 if (isMounted) {
+                    dispatch(setMessage({ error: error.response.data.error.message }));
                     navigate('/logout');
                 }
             }
@@ -40,7 +43,7 @@ export default function Dashboard() {
         return () => {
             isMounted = false;
         };
-    }, [navigate]);
+    }, [navigate, dispatch]);
 
 
     const flashcardCollections = [

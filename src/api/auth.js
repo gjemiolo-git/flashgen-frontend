@@ -20,5 +20,5 @@ export async function onLogout() {
 }
 
 export async function fetchProtectedInfo() {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/aduth/protected`);
+    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/protected`);
 }

@@ -9,13 +9,13 @@ export const logoutUser = async (dispatch, navigate, isAuthenticated) => {
         return;
     }
     try {
-        console.log('Auth', isAuthenticated)
+        //console.log('Auth', isAuthenticated)
         await onLogout();
         dispatch(clearUser());
-        dispatch(setMessage({ success: 'Successfully logged out' }));
+        //dispatch(setMessage({ success: 'Successfully logged out' }));
         navigate('/login');
     } catch (error) {
-        dispatch(setMessage({ error: 'Logout failed' }));
+        //dispatch(setMessage({ error: 'Logout failed' }));
         console.error('Logout failed', error);
     }
 

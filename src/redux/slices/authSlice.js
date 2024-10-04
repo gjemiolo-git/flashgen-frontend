@@ -2,12 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     user: null,
-    message: {
-        success: null,
-        error: null,
-        warning: null,
-        info: null
-    }
+    message: null
 };
 
 const authSlice = createSlice({
@@ -21,10 +16,11 @@ const authSlice = createSlice({
             state.user = null;
         },
         setMessage: (state, action) => {
+            clearMessage();
             state.message = action.payload;
         },
         clearMessage: (state) => {
-            state.message = {};
+            state.message = null;
         },
     }
 })
