@@ -1,32 +1,47 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Typography, Button, Container, Paper, Link } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { emailValidation, passwordValidation } from '../utils/validations';
 import EmailField from '../components/input/EmailField';
 import PasswordField from '../components/input/PasswordField';
+import { setMessage, setUser } from '../redux/slices/authSlice';
+import { onLogin } from '../api/auth';
 
 function Login() {
+    const { register, setFocus, handleSubmit, clearErrors, formState: { errors }, setError } = useForm();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors }, setError, setValue } = useForm();
-    const passwordRef = useRef(null);
+    const dispatch = useDispatch();
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (payload) => {
         try {
-            console.log('Login data:', data);
-
+            const { data } = await onLogin(payload);
+            const { user } = data;
+            dispatch(setUser(user));
+            dispatch(setMessage({ success: data.message }));
             navigate('/dashboard');
-        } catch (error) {
-            setError('password', {
-                type: 'manual',
-                message: 'Invalid email or password'
-            });
-            setValue('password', '');
-            if (passwordRef.current) {
-                passwordRef.current.focus();
+        } catch (e) {
+            if (e.response && e.response.data && Array.isArray(e.response.data.errors)) {
+                const allErrors = e.response.data.errors;
+                console.log(allErrors);
+                dispatch(setMessage({ error: allErrors[0].msg }));
+                const fieldErrors = ['email', 'password'];
+                fieldErrors.forEach(field => {
+                    const errors = allErrors.filter(error => error.path === field);
+                    if (errors.length > 0) {
+                        setError(field, {
+                            type: 'manual',
+                            message: errors.map(error => error.msg).join('. ')
+                        });
+                        setFocus(field)
+                    } else {
+                        clearErrors(field);
+                    }
+                });
             }
-        }
-    };
+        };
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -45,7 +60,6 @@ function Login() {
                             register={register}
                             errors={errors}
                             validation={passwordValidation}
-                            ref={passwordRef}
                         />
                         <Button
                             type="submit"

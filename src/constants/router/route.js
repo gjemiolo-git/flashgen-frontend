@@ -15,20 +15,22 @@ export const ROUTES = [
             { path: '/register', element: <Register /> },
             { path: '/terms', element: <TermsOfService /> },
             { path: '/about', element: <About /> },
+            { path: '/privacy', element: <PrivacyPolicy /> },
         ]
     },
     {
         id: 'protectedRoutes',
         protected: true,
         routes: [
-            { path: '/privacy', element: <PrivacyPolicy /> },
+            { path: '/dashboard', element: <Dashboard /> },
         ]
     },
     {
         id: 'privateRoutes',
         private: true,
         routes: [
-            { path: '/dashboard', element: <Dashboard /> },
+
+
         ]
     }
 ];

@@ -3,22 +3,22 @@ axios.defaults.withCredentials = true;
 
 export async function onRegistration(registrationData) {
     return await axios.post(
-        `{REACT_APP_BACKEND_IP}:{REACT_APP_BACKEND_PORT}/api/register`,
+        `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/register`,
         registrationData
     )
 }
 
 export async function onLogin(loginData) {
     return await axios.post(
-        `{REACT_APP_BACKEND_IP}:{REACT_APP_BACKEND_PORT}/api/register`,
+        `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/login`,
         loginData
     )
 }
 
 export async function onLogout() {
-    return await axios.get(`{REACT_APP_BACKEND_IP}:{REACT_APP_BACKEND_PORT}/api/logout`);
+    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/logout`);
 }
 
 export async function fetchProtectedInfo() {
-    return await axios.get(`{REACT_APP_BACKEND_IP}:{REACT_APP_BACKEND_PORT}/api/protected`);
+    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/protected`);
 }

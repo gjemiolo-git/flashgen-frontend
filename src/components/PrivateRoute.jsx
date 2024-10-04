@@ -1,37 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
-import { Container, Box, Paper, Skeleton, Typography } from '@mui/material';
+import React from 'react';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+//import { Container, Box, Paper, CircularProgress, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../redux/slices/authSlice';
+
+// const Spinner = () => {
+//     return (
+//         <Container component="main" maxWidth="xs">
+//             <Paper elevation={3} sx={{ mt: 8, p: 4 }}>
+//                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+//                     <Typography component="h1" variant="h5">
+//                         Loading...
+//                     </Typography>
+//                     <CircularProgress />
+//                 </Box>
+//             </Paper>
+//         </Container>
+//     );
+// }
 
 const PrivateRoute = () => {
-    const [isAuth, setIsAuth] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user) !== null;
+    const location = useLocation();
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setIsAuth(false);
-            setIsLoading(false);
-        };
-
-        checkAuth();
-    }, []);
-
-    if (isLoading) {
-        return (
-            <Container component="main" maxWidth="xs">
-                <Paper elevation={3} sx={{ mt: 8, p: 4 }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <Typography component="h1" variant="h5">
-                            Loading...
-                        </Typography>
-                        <Skeleton width={350} variant="text" sx={{ fontSize: '2rem' }} />
-                    </Box>
-                </Paper>
-            </Container>
-        )
+    if (!user) {
+        dispatch(setMessage({ warning: 'You need to be logged in to visit dashboard.' }));
+        return <Navigate to='/login' state={{ from: location }} replace />;
     }
 
-    return isAuth ? <Outlet /> : <Navigate to='/login' />;
+    return <Outlet />;
 }
 
-export default PrivateRoute;
+
+const ProtectedRoute = () => {
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user) !== null;
+    const location = useLocation();
+
+    if (!user) {
+        dispatch(setMessage({ warning: 'You need to be logged in to visit dashboard.' }));
+        return <Navigate to='/login' state={{ from: location }} replace />;
+    }
+
+    return <Outlet />;
+}
+
+export { PrivateRoute, ProtectedRoute };

@@ -8,6 +8,7 @@ import lightTheme from '../../utils/theme';
 import darkTheme from '../../utils/theme2';
 import Header from './Header';
 import Footer from './Footer';
+import Notifications from './Notifications';
 
 
 function Layout() {
@@ -17,7 +18,7 @@ function Layout() {
     });
 
     useEffect(() => {
-        Cookies.set('darkMode', darkMode.toString(), { expires: 365 });
+        Cookies.set('darkMode', darkMode.toString(), { expires: 365, sameSite: 'Lax' });
     }, [darkMode]);
 
     const toggleDarkMode = () => {
@@ -29,6 +30,7 @@ function Layout() {
             <CssBaseline />
             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                 <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+                <Notifications />
                 <Container component="main" sx={{ flex: 1, py: 3 }}>
                     <Outlet />
                 </Container>

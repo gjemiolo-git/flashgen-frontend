@@ -4,8 +4,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useSelector } from 'react-redux';
 
 function Header({ darkMode, toggleDarkMode }) {
+    const user = useSelector((state) => state.auth.user) !== null;
     return (
         <AppBar position="static">
             <Toolbar>
@@ -37,12 +39,29 @@ function Header({ darkMode, toggleDarkMode }) {
                 <Button color="inherit" component={RouterLink} to="/library">
                     Library
                 </Button>
-                <Button color="inherit" component={RouterLink} to="/login">
-                    Login
-                </Button>
-                <Button color="inherit" component={RouterLink} to="/register">
-                    Register
-                </Button>
+                {!user ? (
+                    <>
+                        <Button color="inherit" component={RouterLink} to="/login">
+                            Login
+                        </Button>
+                        <Button color="inherit" component={RouterLink} to="/register">
+                            Register
+                        </Button>
+                    </>
+                )
+                    : (
+                        <>
+                            <Button color="inherit" component={RouterLink} to="/dashboard">
+                                Dashboard
+                            </Button>
+                            <Button color="inherit" component={RouterLink} to="/logout">
+                                Logout
+                            </Button>
+                        </>
+                    )}
+
+
+
                 <IconButton sx={{ ml: 1 }} onClick={toggleDarkMode} color="inherit">
                     {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                 </IconButton>
