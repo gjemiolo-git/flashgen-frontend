@@ -15,12 +15,32 @@ export async function onLogin(loginData) {
     )
 }
 
+export async function topicCreate(topicName) {
+    return await axios.post(
+        `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/topics`,
+        { name: topicName }
+    )
+}
+
 export async function onLogout() {
     return await axios.post(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/logout`);
 }
 
+export async function deleteTopic(tId) {
+    return await axios.delete(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/topics/${tId}`);
+}
+
 export async function fetchProtectedInfo(page = 1, limit = 5) {
     return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/dashboard/flashcard-sets`, {
+        params: {
+            page: page,
+            limit: limit
+        }
+    });
+}
+
+export async function getTopicList(page = 1, limit = 15) {
+    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/topics`, {
         params: {
             page: page,
             limit: limit

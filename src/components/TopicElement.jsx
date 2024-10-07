@@ -1,9 +1,10 @@
 import React from 'react';
-import { Paper, Typography, Button, Box } from '@mui/material';
+import { Paper, Typography, Button, Box, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const TopicElement = ({ topic, index }) => {
+const TopicElement = ({ topic, index, onDelete }) => {
     const theme = useTheme();
 
     return (
@@ -15,8 +16,22 @@ const TopicElement = ({ topic, index }) => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 backgroundColor: index % 2 === 1 ? theme.palette.action.hover : 'inherit',
+                position: 'relative',
             }}
         >
+            {topic.isCreator && (
+                <IconButton
+                    aria-label="delete"
+                    onClick={() => onDelete(topic.id)}
+                    sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                    }}
+                >
+                    <DeleteIcon />
+                </IconButton>
+            )}
             <Typography variant="h6" gutterBottom>
                 {topic.name}
             </Typography>
