@@ -6,6 +6,7 @@ import PrivacyPolicy from '../../components/static/PrivacyPolicy'
 import About from '../../components/static/About'
 import TermsOfService from '../../components/static/TermsOfService'
 import Logout from '../../pages/Logout';
+import Library from '../../pages/Library';
 
 export const ROUTES = [
     {
@@ -18,6 +19,7 @@ export const ROUTES = [
             { path: '/terms', element: <TermsOfService /> },
             { path: '/about', element: <About /> },
             { path: '/privacy', element: <PrivacyPolicy /> },
+            { path: '/library', element: <Library /> },
         ]
     },
     {

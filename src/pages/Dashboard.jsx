@@ -1,85 +1,89 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Container,
-    Paper,
-    Typography,
-    Button,
-} from '@mui/material';
+import { Container, Typography, Pagination } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchProtectedInfo } from '../api/auth';
 import Spinner from '../components/Spinner';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../redux/slices/authSlice';
+import FlashcardSetElement from '../components/FlashcardSetElement';
+
+const ITEMS_PER_PAGE = 5;
 
 export default function Dashboard() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [protectedData, setProtectedData] = useState('');
+    const [flashcardSets, setFlashcardSets] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        let isMounted = true;
-
-        const fetchDataSafely = async () => {
+        const fetchData = async () => {
             try {
-                const { data } = await fetchProtectedInfo();
-                if (isMounted) {
-                    console.log(data);
-                    setProtectedData(data.info);
-                    setLoading(false);
-                }
+                const response = await fetchProtectedInfo(page, ITEMS_PER_PAGE);
+                setFlashcardSets(response.data.flashcardSets);
+                setTotalPages(response.data.totalPages);
+                setLoading(false);
             } catch (error) {
-                //console.log();
-                if (isMounted) {
-                    dispatch(setMessage({ error: error.response.data.error.message }));
-                    navigate('/logout');
-                }
+                dispatch(setMessage({ error: error.response.data.error }));
+                navigate('/logout');
             }
         };
 
-        fetchDataSafely();
+        fetchData();
+    }, [navigate, dispatch, page]);
 
-        return () => {
-            isMounted = false;
-        };
-    }, [navigate, dispatch]);
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
+    if (loading) return <Spinner />;
 
-    const flashcardCollections = [
-        { id: 1, name: 'Machine Learning Basics', cardCount: 20 },
-        { id: 2, name: 'React Hooks', cardCount: 15 },
-        { id: 3, name: 'GraphQL Fundamentals', cardCount: 25 },
-    ];
+    return (
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Typography
+                variant="h4"
+                gutterBottom
+                sx={{
+                    textAlign: 'center',
+                    fontWeight: 'bold'
+                }}
+            >
+                Your Flashcard Sets
+            </Typography>
 
-    return loading ? (<Spinner />)
-        : (
-            <>
-                <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-                    <Typography variant="h4" gutterBottom>
-                        {protectedData}
-                    </Typography>
+            {flashcardSets.length === 0 ? (
+                <FlashcardSetElement
+                    set={{
+                        name: 'No Flashcard Sets',
+                        cardCount: 'You haven\'t created any flashcard sets yet.',
+                        id: 'create-flashcard-set'
+                    }}
+                />
+            ) : (
+                <>
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={handlePageChange}
+                        sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
+                    />
                     <Grid container spacing={3}>
-                        {flashcardCollections.map((collection) => (
-                            <Grid size={12} key={collection.id}>
-                                <Paper sx={{ p: 2 }}>
-                                    <Typography variant="h6">{collection.name}</Typography>
-                                    <Typography color="text.secondary">
-                                        {collection.cardCount} cards
-                                    </Typography>
-                                    <Button
-                                        variant="contained"
-                                        sx={{ mt: 2 }}
-                                        component={Link}
-                                        to={`/collection/${collection.id}`}
-                                    >
-                                        Study Now
-                                    </Button>
-                                </Paper>
+                        {flashcardSets.map((set, index) => (
+                            <Grid size={{ xs: 12 }} key={set.id}>
+                                <FlashcardSetElement set={set} index={index} />
                             </Grid>
                         ))}
                     </Grid>
-                </Container>
-            </>
-        );
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={handlePageChange}
+                        sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
+                    />
+                </>
+            )}
+        </Container>
+    );
 }
