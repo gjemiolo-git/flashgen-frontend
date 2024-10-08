@@ -16,7 +16,8 @@ function Login() {
 
     const onSubmit = async (payload) => {
         try {
-            const { data } = await onLogin(payload);
+            //console.log(payload);
+            const data = await onLogin(payload);
             const { user } = data;
             dispatch(setUser(user));
             dispatch(setMessage({ success: data.message }));

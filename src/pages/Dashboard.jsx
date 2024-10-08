@@ -21,14 +21,17 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetchProtectedInfo(page, ITEMS_PER_PAGE);
-                setFlashcardSets(response.data.flashcardSets);
-                setTotalPages(response.data.totalPages);
+                const data = await fetchProtectedInfo(page, ITEMS_PER_PAGE);
+                //console.log(data);
+                setFlashcardSets(data.flashcardSets);
+                setTotalPages(data.totalPages);
                 setLoading(false);
             } catch (error) {
-                dispatch(setMessage({ error: error.response.data.error }));
+                console.error('Error fetching protected info:', error);
+                dispatch(setMessage({ error: error.message || 'An error occurred' }));
                 navigate('/logout');
             }
+
         };
 
         fetchData();

@@ -10,6 +10,12 @@ import { store, persistor } from './redux/store'
 const container = document.getElementById('root');
 const root = createRoot(container);
 
+window.addEventListener('error', (e) => {
+  if (e.message === 'ResizeObserver loop completed with undelivered notifications.') {
+    e.stopImmediatePropagation();
+  }
+});
+
 root.render(
   <>
     <Provider store={store}>

@@ -58,7 +58,7 @@ function Home() {
                                 variant="outlined"
                                 color="primary"
                                 component={RouterLink}
-                                to="/demo"
+                                to="/library"
                                 size="large"
                             >
                                 Full Demo

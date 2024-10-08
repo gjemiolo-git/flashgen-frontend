@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Pagination, Button } from '@mui/material';
+import { Container, Typography, Pagination, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import TopicElement from '../components/TopicElement';
 import { topicCreate, getTopicList, deleteTopic } from '../api/auth';
@@ -24,14 +24,14 @@ export default function Library() {
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const response = await getTopicList(page, ITEMS_PER_PAGE);
-                setTopics(response.data.topics);
-                console.log(response.data.topics)
-                setTotalPages(response.data.totalPages);
+                const data = await getTopicList(page, ITEMS_PER_PAGE);
+                setTopics(data.topics);
+                //  console.log(data.topics)
+                setTotalPages(data.totalPages);
                 setLoading(false);
             } catch (error) {
                 console.log(error);
-                dispatch(setMessage({ error: error.response.data.error }));
+                dispatch(setMessage({ error: error.data.error }));
                 navigate('/logout');
             }
         };
@@ -48,17 +48,16 @@ export default function Library() {
         }
     };
 
-
     const handleCreateTopic = async (topicName) => {
         try {
             await topicCreate(topicName);
             // Refresh the topic list after creating a new topic
-            const response = await getTopicList(1, ITEMS_PER_PAGE);
-            setTopics(response.data.topics);
-            setTotalPages(response.data.totalPages);
+            const data = await getTopicList(1, ITEMS_PER_PAGE);
+            setTopics(data.topics);
+            setTotalPages(data.totalPages);
             setPage(1);
         } catch (error) {
-            dispatch(setMessage({ error: error.response.data.error }));
+            dispatch(setMessage({ error: error.data.error }));
         }
     };
 
@@ -70,24 +69,18 @@ export default function Library() {
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Typography
-                variant="h4"
-                gutterBottom
-                sx={{
-                    textAlign: 'center',
-                    fontWeight: 'bold'
-                }}
-            >
-                Topic Library
-            </Typography>
-            <Button
-                variant="contained"
-                onClick={() => setIsCreateDialogOpen(true)}
-                sx={{ mb: 2 }}
-            >
-                Create New Topic
-            </Button>
-
+            <Box sx={{ textAlign: 'center', position: 'relative', mb: 2 }}>
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                    Topic Library
+                </Typography>
+                <Button
+                    variant="contained"
+                    onClick={() => setIsCreateDialogOpen(true)}
+                    sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
+                >
+                    Create New Topic
+                </Button>
+            </Box>
             {topics.length === 0 ? (
                 <TopicElement
                     topic={{

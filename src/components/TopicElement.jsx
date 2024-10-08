@@ -35,6 +35,9 @@ const TopicElement = ({ topic, index, onDelete }) => {
             <Typography variant="h6" gutterBottom>
                 {topic.name}
             </Typography>
+            <Typography variant="h7" gutterBottom>
+                <Typography variant="h7" sx={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>{topic.setCount}</Typography> Flashcard Sets
+            </Typography>
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
                 <Button
                     variant="contained"

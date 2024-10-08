@@ -1,50 +1,46 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-export async function onRegistration(registrationData) {
-    return await axios.post(
-        `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/register`,
-        registrationData
-    )
-}
+const API_BASE_URL = `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api`;
 
-export async function onLogin(loginData) {
-    return await axios.post(
-        `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/login`,
-        loginData
-    )
-}
-
-export async function topicCreate(topicName) {
-    return await axios.post(
-        `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/topics`,
-        { name: topicName }
-    )
-}
-
-export async function onLogout() {
-    return await axios.post(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/auth/logout`);
-}
-
-export async function deleteTopic(tId) {
-    return await axios.delete(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/topics/${tId}`);
-}
-
-export async function fetchProtectedInfo(page = 1, limit = 5) {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/dashboard/flashcard-sets`, {
-        params: {
-            page: page,
-            limit: limit
+const apiWrapper = async (apiCall) => {
+    try {
+        const response = await apiCall();
+        return response.data;
+    } catch (error) {
+        console.error('API call failed:', error.message);
+        if (error.response) {
+            console.error('Error data:', error.response.data);
+            console.error('Error status:', error.response.status);
+            console.error('Error headers:', error.response.headers);
+        } else if (error.request) {
+            console.error('No response received:', error.request);
+        } else {
+            console.error('Error setting up request:', error.message);
         }
-    });
-}
+        throw error;
+    }
+};
 
-export async function getTopicList(page = 1, limit = 15) {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api/ai/topics`, {
-        params: {
-            page: page,
-            limit: limit
-        }
-    });
-}
 
+
+export const onRegistration = (registrationData) =>
+    apiWrapper(() => axios.post(`${API_BASE_URL}/auth/register`, registrationData));
+
+export const onLogin = (loginData) =>
+    apiWrapper(() => axios.post(`${API_BASE_URL}/auth/login`, loginData));
+
+export const topicCreate = (topicName) =>
+    apiWrapper(() => axios.post(`${API_BASE_URL}/ai/topics`, { name: topicName }));
+
+export const onLogout = () =>
+    apiWrapper(() => axios.post(`${API_BASE_URL}/auth/logout`));
+
+export const deleteTopic = (tId) =>
+    apiWrapper(() => axios.delete(`${API_BASE_URL}/ai/topics/${tId}`));
+
+export const fetchProtectedInfo = (page = 1, limit = 5) =>
+    apiWrapper(() => axios.get(`${API_BASE_URL}/ai/dashboard/flashcard-sets`, { params: { page, limit } }));
+
+export const getTopicList = (page = 1, limit = 15) =>
+    apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics`, { params: { page, limit } }));

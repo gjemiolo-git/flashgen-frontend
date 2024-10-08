@@ -1,31 +1,61 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, IconButton } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { AppBar, Toolbar, Typography, Button, IconButton, Badge, useTheme, Menu, MenuItem, useMediaQuery } from '@mui/material';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
-function Header({ darkMode, toggleDarkMode }) {
-    const user = useSelector((state) => state.auth.user);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+const NavButton = ({ to, children, onClick }) => {
+    const location = useLocation();
+    const theme = useTheme();
+    const isActive = location.pathname === to;
 
-    useEffect(() => {
-        setIsAuthenticated(user !== null);
-    }, [user]);
     return (
-        <AppBar position="static">
+        <Button
+            color="inherit"
+            component={RouterLink}
+            to={to}
+            onClick={onClick}
+            sx={{
+                backgroundColor: isActive ? theme.palette.primary.dark : 'transparent',
+                '&:hover': {
+                    backgroundColor: isActive ? theme.palette.primary.dark : 'rgba(255, 255, 255, 0.08)',
+                },
+            }}
+        >
+            {children}
+        </Button>
+    );
+};
+
+function Header({ darkMode, toggleDarkMode, isAuthenticated, notificationCount }) {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleMenu = (event) => setAnchorEl(event.currentTarget);
+    const handleClose = () => setAnchorEl(null);
+
+    const menuItems = [
+        { to: '/', label: 'Home' },
+        { to: '/create', label: 'Create' },
+        { to: '/library', label: 'Library' },
+        ...(isAuthenticated
+            ? [{ to: '/dashboard', label: 'Dashboard' }, { to: '/logout', label: 'Logout' }]
+            : [{ to: '/login', label: 'Login' }, { to: '/register', label: 'Register' }]),
+    ];
+
+    return (
+        <AppBar position="sticky">
             <Toolbar>
-                <FlashOnIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                <FlashOnIcon sx={{ mr: 1 }} />
                 <Typography
                     variant="h6"
-                    noWrap
                     component={RouterLink}
                     to="/"
                     sx={{
-                        mr: 2,
-                        display: { xs: 'none', md: 'flex' },
                         fontFamily: 'monospace',
                         fontWeight: 700,
                         letterSpacing: '.3rem',
@@ -36,41 +66,43 @@ function Header({ darkMode, toggleDarkMode }) {
                 >
                     {process.env.REACT_APP_NAME}
                 </Typography>
-                <Button color="inherit" component={RouterLink} to="/">
-                    Home
-                </Button>
-                <Button color="inherit" component={RouterLink} to="/create">
-                    Create
-                </Button>
-                <Button color="inherit" component={RouterLink} to="/library">
-                    Library
-                </Button>
-                {!isAuthenticated ? (
-                    <>
-                        <Button color="inherit" component={RouterLink} to="/login">
-                            Login
-                        </Button>
-                        <Button color="inherit" component={RouterLink} to="/register">
-                            Register
-                        </Button>
-                    </>
-                )
-                    : (
-                        <>
-                            <Button color="inherit" component={RouterLink} to="/dashboard">
-                                Dashboard
-                            </Button>
-                            <Button color="inherit" component={RouterLink} to="/logout">
-                                Logout
-                            </Button>
-                        </>
-                    )}
 
+                {isAuthenticated && !isMobile && (
+                    <IconButton color="inherit">
+                        <Badge badgeContent={notificationCount} color="secondary">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
+                )}
 
-
-                <IconButton sx={{ ml: 1 }} onClick={toggleDarkMode} color="inherit">
+                <IconButton onClick={toggleDarkMode} color="inherit">
                     {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                 </IconButton>
+
+                {isMobile ? (
+                    <>
+                        <IconButton color="inherit" onClick={handleMenu}>
+                            <MenuIcon />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            {menuItems.map((item) => (
+                                <MenuItem key={item.to} onClick={handleClose}>
+                                    <NavButton to={item.to}>{item.label}</NavButton>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </>
+                ) : (
+                    menuItems.map((item) => (
+                        <NavButton key={item.to} to={item.to}>
+                            {item.label}
+                        </NavButton>
+                    ))
+                )}
             </Toolbar>
         </AppBar>
     );

@@ -7,6 +7,8 @@ import About from '../../components/static/About'
 import TermsOfService from '../../components/static/TermsOfService'
 import Logout from '../../pages/Logout';
 import Library from '../../pages/Library';
+import HomeOld from '../../pages/Home_old';
+import Create from '../../pages/Create';
 
 export const ROUTES = [
     {
@@ -20,6 +22,7 @@ export const ROUTES = [
             { path: '/about', element: <About /> },
             { path: '/privacy', element: <PrivacyPolicy /> },
             { path: '/library', element: <Library /> },
+            { path: '/create', element: <Create /> },
         ]
     },
     {

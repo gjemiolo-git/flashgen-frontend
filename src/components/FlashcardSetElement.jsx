@@ -5,7 +5,6 @@ import { useTheme } from '@mui/material/styles';
 
 const FlashcardSetElement = ({ set, onDelete, index }) => {
   const theme = useTheme();
-
   return (
     <Paper
       sx={{
@@ -14,11 +13,12 @@ const FlashcardSetElement = ({ set, onDelete, index }) => {
       }}
     >
       <Typography variant="h6">{set.name}</Typography>
+      <Typography variant="h7">{set.topics[0].name} </Typography>
       <Typography color="text.secondary">
-        {set.cardCount} cards
+        <Typography variant="h7" sx={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>{set.cardCount}</Typography> cards
       </Typography>
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box sx={{ width: '10%' }} /> {/*Spacer*/}
+        <Box sx={{ width: '10%' }} />
         <Button
           variant="contained"
           component={Link}

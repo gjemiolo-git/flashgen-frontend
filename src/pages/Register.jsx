@@ -17,7 +17,7 @@ function Register() {
 
     const onSubmit = async (payload) => {
         try {
-            const { data } = await onRegistration(payload);
+            const data = await onRegistration(payload);
             reset();
             dispatch(setMessage({ success: data.message }));
             navigate('/login');
