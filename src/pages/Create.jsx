@@ -34,7 +34,7 @@ export default function Create() {
     }, []);
 
     const onSubmit = (data) => {
-        console.log(data);
+        console.log({ payload: data });
         // Here you would typically send this data to your backend
     };
 
@@ -62,7 +62,7 @@ export default function Create() {
                         render={({ field: { onChange, value } }) => (
                             <Autocomplete
                                 multiple
-                                options={topics}
+                                options={topics.filter(topic => !value.some(v => v.id === topic.id))}
                                 value={value || []}
                                 getOptionLabel={(option) => option.name}
                                 renderInput={(params) => (
@@ -87,8 +87,22 @@ export default function Create() {
                                         clearErrors("topics");
                                     }
                                 }}
+                                isOptionEqualToValue={(option, value) => option.id === value.id}
                             />
                         )}
+                    />
+
+                    <TextField
+                        fullWidth
+                        multiline
+                        minRows={1}
+                        maxRows={6}
+                        label="Quiz Specification"
+                        {...register("specs", { required: "Specification is required" })}
+                        sx={{ mb: 3 }}
+                        error={!!errors.specs}
+                        helperText={errors.specs?.message}
+                        margin="normal"
                     />
 
                     <FlashcardTable />

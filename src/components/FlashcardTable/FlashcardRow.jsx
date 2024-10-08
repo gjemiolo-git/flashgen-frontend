@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { TableRow, TableCell, IconButton, Typography, Collapse } from '@mui/material';
+import { TableRow, TableCell, IconButton, Typography, Collapse, Grid } from '@mui/material';
 import { Remove } from '@mui/icons-material';
 import ExpandedFlashcardContent from './ExpandedFlashcardContent';
 import { useFormContext } from 'react-hook-form';
@@ -7,8 +7,8 @@ import { useFormContext } from 'react-hook-form';
 const FlashcardRow = ({ index, expandedRow, keepExpanded, onRowClick, onRemove }) => {
     const { getValues } = useFormContext();
 
-    const trimContent = useCallback((content, maxLength = 50) => {
-        if (content.length === 0) return;
+    const formatContent = useCallback((content, maxLength = 20) => {
+        if (content.length === 0) return `${index + 1}. (Empty flashcard)`;
         content = `${index + 1}. ` + (content || '');
         if (content.length <= maxLength) return content;
         return content.substring(0, maxLength) + '...'
@@ -33,15 +33,22 @@ const FlashcardRow = ({ index, expandedRow, keepExpanded, onRowClick, onRemove }
                 onClick={handleRowClick}
                 style={{ cursor: keepExpanded ? 'default' : 'pointer' }}
             >
-                <TableCell sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography noWrap sx={{ flexGrow: 1 }}>
-                        {trimContent(frontContent) || "(Empty flashcard)"}
-                    </Typography>
-                    <IconButton onClick={handleRemove}>
-                        <Remove />
-                    </IconButton>
+                <TableCell sx={{ width: '100%' }}>
+                    <Grid container alignItems="center" spacing={1}>
+                        <Grid item xs={10} sm={11}>
+                            <Typography noWrap>
+                                {formatContent(frontContent)}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2} sm={1}>
+                            <IconButton onClick={handleRemove}>
+                                <Remove />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
                 </TableCell>
             </TableRow>
+
 
             <TableRow>
                 <TableCell colSpan={2} style={{ paddingBottom: 0, paddingTop: 0 }}>

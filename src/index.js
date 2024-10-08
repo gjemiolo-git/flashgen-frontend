@@ -6,22 +6,16 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js'
 import App from './App.js';
 import { store, persistor } from './redux/store'
-
+import ErrorBoundary from '../src/pages/ErrorBoundary';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
-window.addEventListener('error', (e) => {
-  if (e.message === 'ResizeObserver loop completed with undelivered notifications.') {
-    e.stopImmediatePropagation();
-  }
-});
-
 root.render(
-  <>
+  <ErrorBoundary>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <App />
       </PersistGate>
     </Provider>
-  </>
+  </ErrorBoundary>
 );
