@@ -25,7 +25,7 @@ const FlashcardRow = ({ index, expandedRow, keepExpanded, onRowClick, onRemove }
         onRemove(index);
     }, [onRemove, index]);
 
-    const frontContent = getValues(`flashcards.${index}.front`);
+    const frontContent = getValues(`flashcards.${index}.frontContent`);
 
     return (
         <React.Fragment>

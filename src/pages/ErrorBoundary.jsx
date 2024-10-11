@@ -1,5 +1,4 @@
 import React from 'react';
-
 class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
@@ -7,7 +6,10 @@ class ErrorBoundary extends React.Component {
     }
 
     static getDerivedStateFromError(error) {
-        return { hasError: true };
+        if (error.message !== 'ResizeObserver loop completed with undelivered notifications.') {
+            return { hasError: true };
+        }
+        return null;
     }
 
     componentDidCatch(error, errorInfo) {
@@ -15,6 +17,7 @@ class ErrorBoundary extends React.Component {
             console.log('ResizeObserver error caught and suppressed');
         } else {
             console.error('Uncaught error:', error, errorInfo);
+            // You can also send error reports to a service here
         }
     }
 
@@ -22,7 +25,6 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             return <h1>Something went wrong.</h1>;
         }
-
         return this.props.children;
     }
 }

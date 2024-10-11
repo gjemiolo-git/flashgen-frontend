@@ -1,12 +1,26 @@
-import React from 'react';
-import { Button, Box, useTheme } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Box, useTheme, CircularProgress, TextField } from '@mui/material';
 import { Add, Refresh } from '@mui/icons-material';
 
 const AddFlashcardButton = ({ onAdd, onFetch }) => {
     const theme = useTheme();
+    const [isFetching, setIsFetching] = useState(false);
+    const [fetchCount, setFetchCount] = useState(1);
+
+    const handleFetch = async () => {
+        setIsFetching(true);
+        await onFetch(fetchCount);
+        setIsFetching(false);
+    };
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, mt: 2, mb: 2 }}>
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mt: 2,
+            mb: 2
+        }}>
             <Button
                 variant="outlined"
                 startIcon={<Add />}
@@ -20,19 +34,33 @@ const AddFlashcardButton = ({ onAdd, onFetch }) => {
             >
                 Add Flashcard
             </Button>
-            <Button
-                variant="outlined"
-                startIcon={<Refresh />}
-                onClick={onFetch}
-                sx={{
-                    color: theme.palette.secondary.main,
-                    '&:hover': {
-                        color: theme.palette.secondary.dark,
-                    },
-                }}
-            >
-                Fetch Flashcards
-            </Button>
+
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <TextField
+                    type="number"
+                    value={fetchCount}
+                    onChange={(e) => setFetchCount(Math.min(Math.max(1, parseInt(e.target.value) || 1), 5))}
+                    inputProps={{ min: 1, max: 5 }}
+                    size="small"
+                    sx={{
+                        '& input': { textAlign: 'center' }
+                    }}
+                />
+                <Button
+                    variant="outlined"
+                    startIcon={isFetching ? <CircularProgress size={20} /> : <Refresh />}
+                    onClick={handleFetch}
+                    disabled={isFetching}
+                    sx={{
+                        color: theme.palette.secondary.main,
+                        '&:hover': {
+                            color: theme.palette.secondary.dark,
+                        },
+                    }}
+                >
+                    Fetch Flashcards
+                </Button>
+            </Box>
         </Box>
     );
 };

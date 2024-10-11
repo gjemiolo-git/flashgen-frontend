@@ -26,7 +26,6 @@ export default function Library() {
             try {
                 const data = await getTopicList(page, ITEMS_PER_PAGE);
                 setTopics(data.topics);
-                //  console.log(data.topics)
                 setTotalPages(data.totalPages);
                 setLoading(false);
             } catch (error) {
@@ -41,7 +40,7 @@ export default function Library() {
 
     const handleDelete = async (topicId) => {
         try {
-            await deleteTopic(topicId); // Assuming you have a deleteTopic function
+            await deleteTopic(topicId);
             setRefreshTrigger(prev => prev + 1);
         } catch (error) {
             dispatch(setMessage({ error: error.response?.data?.error || 'Failed to delete topic' }));

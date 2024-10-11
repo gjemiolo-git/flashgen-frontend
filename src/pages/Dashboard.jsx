@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, Pagination } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
-import { fetchProtectedInfo } from '../api/auth';
+import { fetchProtectedInfo, deleteSet } from '../api/auth';
 import Spinner from '../components/Spinner';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../redux/slices/authSlice';
@@ -14,6 +14,7 @@ export default function Dashboard() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [flashcardSets, setFlashcardSets] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -22,7 +23,6 @@ export default function Dashboard() {
         const fetchData = async () => {
             try {
                 const data = await fetchProtectedInfo(page, ITEMS_PER_PAGE);
-                //console.log(data);
                 setFlashcardSets(data.flashcardSets);
                 setTotalPages(data.totalPages);
                 setLoading(false);
@@ -35,7 +35,17 @@ export default function Dashboard() {
         };
 
         fetchData();
-    }, [navigate, dispatch, page]);
+    }, [navigate, dispatch, page, refreshTrigger]);
+
+    const onDelete = async (sId) => {
+        try {
+            await deleteSet(sId);
+            console.log('Ondelete triggered for ', sId)
+            setRefreshTrigger(prev => prev + 1);
+        } catch (error) {
+            dispatch(setMessage({ error: error.response?.data?.error || 'Failed to delete topic' }));
+        }
+    };
 
     const handlePageChange = (event, value) => {
         setPage(value);
@@ -75,7 +85,7 @@ export default function Dashboard() {
                     <Grid container spacing={3}>
                         {flashcardSets.map((set, index) => (
                             <Grid size={{ xs: 12 }} key={set.id}>
-                                <FlashcardSetElement set={set} index={index} />
+                                <FlashcardSetElement set={set} index={index} onDelete={onDelete} />
                             </Grid>
                         ))}
                     </Grid>

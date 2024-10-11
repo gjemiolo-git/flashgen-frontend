@@ -1,47 +1,81 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Table, TableBody, TableContainer, Paper, Box } from '@mui/material';
 import FlashcardTableHeader from './FlashcardTable/FlashcardTableHeader';
 import FlashcardRow from './FlashcardTable/FlashcardRow';
 import AddFlashcardButton from './FlashcardTable/AddFlashcardButton';
+import { fetchNewFlashcards } from '../api/auth';
+import Spinner from './Spinner';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../redux/slices/authSlice';
+import { debounce } from 'lodash';
+import 'resize-observer-polyfill';
 
-export const FlashcardTable = () => {
+export const FlashcardTable = ({ topics, specs }) => {
+    const dispatch = useDispatch();
     const { control, getValues } = useFormContext();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "flashcards"
     });
 
-    const [expandedRow, setExpandedRow] = React.useState(null);
-    const [keepExpanded, setKeepExpanded] = React.useState(false);
+    const [expandedRow, setExpandedRow] = useState(null);
+    const [keepExpanded, setKeepExpanded] = useState(false);
     const frontInputRefs = useRef([]);
 
-    const handleAddFlashcard = () => {
-        append({ front: '', back: '' });
+    const handleAddFlashcard = (front = '', back = '') => {
+        append({ frontContent: front, backContent: back });
         const newIndex = fields.length;
-        setExpandedRow(newIndex);
+        //setExpandedRow(newIndex);
     };
+
+    const handleFetchFlashcard = async (count) => {
+        try {
+            const existingFlashcards = getValues("flashcards")
+                .map(f => ({ frontContent: f.frontContent, backContent: f.backContent }));
+            const data = {
+                topics, specs, number: count,
+                existingFlashcards
+            }
+            const response = await fetchNewFlashcards(data);
+            if (response.flashcards) {
+                response.flashcards.forEach(f => handleAddFlashcard(f.frontContent, f.backContent))
+            }
+            console.log(response.flashcards);
+        } catch (error) {
+            dispatch(setMessage({ error: error.response?.data?.error || 'Failed to delete topic' }));
+        }
+    }
 
     const handleRowClick = (index) => {
         setExpandedRow(prevExpanded => prevExpanded === index ? null : index);
     };
 
-    const handleKeepExpandedToggle = (event) => {
-        setKeepExpanded(event.target.checked);
-        if (event.target.checked) {
+    const handleKeepExpandedToggle = useCallback((event) => {
+        const isChecked = event.target.checked;
+        setKeepExpanded(isChecked);
+        if (isChecked) {
             setExpandedRow(null);
         }
-    };
+    }, []);
+
+
 
     useEffect(() => {
         if (expandedRow !== null) {
-            setTimeout(() => {
+            const debouncedFocus = debounce(() => {
                 const input = frontInputRefs.current[expandedRow];
                 if (input) {
                     input.focus();
                     input.setSelectionRange(input.value.length, input.value.length);
                 }
             }, 100);
+
+            debouncedFocus();
+
+            return () => {
+                debouncedFocus.cancel();
+            };
         }
     }, [expandedRow]);
 
@@ -67,7 +101,8 @@ export const FlashcardTable = () => {
                         ))}
                     </TableBody>
                 </Table>
-                <AddFlashcardButton onAdd={handleAddFlashcard} />
+                <Spinner />
+                <AddFlashcardButton onAdd={handleAddFlashcard} onFetch={handleFetchFlashcard} />
             </TableContainer>
         </Box>
     );

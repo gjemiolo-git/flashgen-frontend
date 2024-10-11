@@ -21,7 +21,7 @@ const ExpandedFlashcardContent = React.memo(({ index, isExpanded }) => {
         <Box margin={1}>
             <TextField
                 label="Front"
-                {...register(`flashcards.${index}.front`)}
+                {...register(`flashcards.${index}.frontContent`)}
                 fullWidth
                 multiline
                 minRows={1}
@@ -34,7 +34,7 @@ const ExpandedFlashcardContent = React.memo(({ index, isExpanded }) => {
             />
             <TextField
                 label="Back"
-                {...register(`flashcards.${index}.back`)}
+                {...register(`flashcards.${index}.backContent`)}
                 fullWidth
                 multiline
                 minRows={1}

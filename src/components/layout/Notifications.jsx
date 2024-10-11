@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert, AlertTitle, Snackbar } from '@mui/material';
 import { clearMessage } from '../../redux/slices/authSlice';
 import { styled } from '@mui/material/styles';
+import ErrorBoundary from '../../pages/ErrorBoundary';
 
 const Notifications = () => {
     const dispatch = useDispatch();
     const message = useSelector((state) => state.auth.message);
-    if (message === null) return;
+    if (!message) return null;
     const { success, info, error, warning } = message;
 
     const handleClose = (event, reason) => {
@@ -52,10 +53,12 @@ const Notifications = () => {
     const isOpen = Boolean(success || info || error || warning);
 
     return (
-        <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center', }} sx={{ width: '33%' }}
-            open={isOpen} autoHideDuration={4000} onClose={handleClose}>
-            {renderAlert()}
-        </Snackbar>
+        <ErrorBoundary>
+            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center', }} sx={{ width: '33%' }}
+                open={isOpen} autoHideDuration={4000} onClose={handleClose}>
+                {renderAlert()}
+            </Snackbar>
+        </ErrorBoundary>
     );
 };
 
