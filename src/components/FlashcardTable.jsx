@@ -8,7 +8,6 @@ import { fetchNewFlashcards } from '../api/auth';
 import Spinner from './Spinner';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../redux/slices/authSlice';
-import { debounce } from 'lodash';
 import 'resize-observer-polyfill';
 
 export const FlashcardTable = ({ topics, specs }) => {
@@ -26,7 +25,7 @@ export const FlashcardTable = ({ topics, specs }) => {
     const handleAddFlashcard = (front = '', back = '') => {
         append({ frontContent: front, backContent: back });
         const newIndex = fields.length;
-        //setExpandedRow(newIndex);
+        setExpandedRow(newIndex);
     };
 
     const handleFetchFlashcard = async (count) => {
@@ -59,25 +58,18 @@ export const FlashcardTable = ({ topics, specs }) => {
         }
     }, []);
 
-
-
     useEffect(() => {
         if (expandedRow !== null) {
-            const debouncedFocus = debounce(() => {
+            requestAnimationFrame(() => {
                 const input = frontInputRefs.current[expandedRow];
                 if (input) {
                     input.focus();
                     input.setSelectionRange(input.value.length, input.value.length);
                 }
-            }, 100);
-
-            debouncedFocus();
-
-            return () => {
-                debouncedFocus.cancel();
-            };
+            });
         }
     }, [expandedRow]);
+
 
     return (
         <Box>

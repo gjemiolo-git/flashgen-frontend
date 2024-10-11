@@ -24,9 +24,7 @@ const ExpandedFlashcardContent = React.memo(({ index, isExpanded }) => {
                 {...register(`flashcards.${index}.frontContent`)}
                 fullWidth
                 multiline
-                minRows={1}
-                maxRows={6}
-                inputProps={{ maxLength: 200 }}
+                rows={3}
                 variant="outlined"
                 margin="normal"
                 inputRef={frontInputRef}
@@ -37,9 +35,7 @@ const ExpandedFlashcardContent = React.memo(({ index, isExpanded }) => {
                 {...register(`flashcards.${index}.backContent`)}
                 fullWidth
                 multiline
-                minRows={1}
-                maxRows={6}
-                inputProps={{ maxLength: 200 }}
+                rows={3}
                 variant="outlined"
                 margin="normal"
                 onChange={handleInputChange}
