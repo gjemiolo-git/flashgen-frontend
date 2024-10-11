@@ -40,7 +40,7 @@ export default function TopicDashboard() {
         };
 
         fetchData();
-    }, [id, navigate, dispatch, page, refreshTrigger]);
+    }, [id, navigate, dispatch, page, totalPages, refreshTrigger]);
 
     const handlePageChange = (event, value) => {
         setPage(value);

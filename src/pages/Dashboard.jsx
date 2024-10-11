@@ -41,7 +41,7 @@ export default function Dashboard() {
     const onDelete = async (sId) => {
         try {
             await deleteSet(sId);
-            console.log('Ondelete triggered for ', sId)
+            dispatch(setMessage({ info: 'Deletion successful' }));
             setRefreshTrigger(prev => prev + 1);
         } catch (error) {
             dispatch(setMessage({ error: error.response?.data?.error || 'Failed to delete topic' }));

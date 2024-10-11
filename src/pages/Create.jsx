@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setMessage } from '../redux/slices/authSlice';
 import Spinner from '../components/Spinner';
 import ErrorBoundary from './ErrorBoundary';
+import { useNavigate } from 'react-router-dom';
 
 export default function Create() {
     const methods = useForm({
@@ -19,7 +20,8 @@ export default function Create() {
         }
     });
     const dispatch = useDispatch();
-    const { control, register, handleSubmit, formState: { errors }, setValue, clearErrors, watch } = methods;
+    const navigate = useNavigate();
+    const { control, register, formState: { errors }, clearErrors, watch } = methods;
     const [topics, setTopics] = useState([]);
     const [created, setCreated] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ export default function Create() {
         };
 
         fetchTopics();
-    }, []);
+    });
 
     const onSubmit = async (data) => {
         try {
@@ -49,6 +51,7 @@ export default function Create() {
                 setCreated(true)
             }
             dispatch(setMessage({ success: "Set Created Successfully" }));
+            navigate('/dashboard');
         } catch (error) {
             const message = error.response.data.error;
             dispatch(setMessage({ error: message }));
