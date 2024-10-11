@@ -13,6 +13,7 @@ import 'resize-observer-polyfill';
 export const FlashcardTable = ({ topics, specs }) => {
     const dispatch = useDispatch();
     const { control, getValues } = useFormContext();
+    const [isFetching, setIsFetching] = useState(false);
     const { fields, append, remove } = useFieldArray({
         control,
         name: "flashcards"
@@ -30,6 +31,7 @@ export const FlashcardTable = ({ topics, specs }) => {
 
     const handleFetchFlashcard = async (count) => {
         try {
+            setIsFetching(true);
             const existingFlashcards = getValues("flashcards")
                 .map(f => ({ frontContent: f.frontContent, backContent: f.backContent }));
             const data = {
@@ -43,6 +45,8 @@ export const FlashcardTable = ({ topics, specs }) => {
             console.log(response.flashcards);
         } catch (error) {
             dispatch(setMessage({ error: error.response?.data?.error || 'Failed to delete topic' }));
+        } finally {
+            setIsFetching(false);
         }
     }
 
@@ -93,8 +97,13 @@ export const FlashcardTable = ({ topics, specs }) => {
                         ))}
                     </TableBody>
                 </Table>
-                <Spinner />
-                <AddFlashcardButton onAdd={handleAddFlashcard} onFetch={handleFetchFlashcard} />
+                {isFetching && <Spinner />}
+                <AddFlashcardButton
+                    onAdd={handleAddFlashcard}
+                    onFetch={handleFetchFlashcard}
+                    isFetching
+                    ={isFetching}
+                />
             </TableContainer>
         </Box>
     );

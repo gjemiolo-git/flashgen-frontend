@@ -52,3 +52,6 @@ export const deleteSet = (sId) =>
 
 export const getTopicList = (page = 1, limit = 15) =>
     apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics`, { params: { page, limit } }));
+
+export const getTopicDashboard = (id, page = 1, limit = 15) =>
+    apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics-dashboard/${id}`, { params: { page, limit } }));

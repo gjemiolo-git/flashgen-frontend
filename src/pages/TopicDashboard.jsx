@@ -1,42 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Pagination } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { useNavigate } from 'react-router-dom';
-import { fetchProtectedInfo, deleteSet } from '../api/auth';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getTopicDashboard } from '../api/auth';
 import Spinner from '../components/Spinner';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../redux/slices/authSlice';
 import FlashcardSetElement from '../components/FlashcardSetElement';
+import { deleteSet } from '../api/auth';
 
 const ITEMS_PER_PAGE = 5;
 
-export default function Dashboard() {
+export default function TopicDashboard() {
+    const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [flashcardSets, setFlashcardSets] = useState([]);
+    const [topic, setTopic] = useState(null);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchProtectedInfo(page, ITEMS_PER_PAGE);
-                console.log(data);
+                const data = await getTopicDashboard(id, page, ITEMS_PER_PAGE);
                 setFlashcardSets(data.flashcardSets);
+                console.log(data);
+                setTopic(data.topics[0]);
                 setTotalPages(data.totalPages);
+                if (page > totalPages) { handlePageChange(1) };
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching protected info:', error);
+                console.error('Error fetching topic data:', error);
                 dispatch(setMessage({ error: error.message || 'An error occurred' }));
-                navigate('/logout');
+                navigate('/dashboard');
             }
-
         };
 
         fetchData();
-    }, [navigate, dispatch, page, refreshTrigger]);
+    }, [id, navigate, dispatch, page, refreshTrigger]);
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
     const onDelete = async (sId) => {
         try {
@@ -46,35 +54,29 @@ export default function Dashboard() {
         } catch (error) {
             dispatch(setMessage({ error: error.response?.data?.error || 'Failed to delete topic' }));
         }
-    };
-
-    const handlePageChange = (event, value) => {
-        setPage(value);
-    };
+    }
 
     if (loading) return <Spinner />;
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Typography
-                variant="h4"
-                gutterBottom
-                sx={{
-                    textAlign: 'center',
-                    fontWeight: 'bold'
-                }}
-            >
-                Your Flashcard Sets
-            </Typography>
+            {topic && (
+                <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}
+                >
+                    {topic.name}
+                </Typography>
+            )}
 
             {flashcardSets.length === 0 ? (
-                <FlashcardSetElement
-                    set={{
-                        name: 'No Flashcard Sets',
-                        cardCount: 'You haven\'t created any flashcard sets yet.',
-                        id: 'create-flashcard-set'
-                    }}
-                />
+                <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
+                    There are no flashcard sets for this topic yet.
+                </Typography>
             ) : (
                 <>
                     <Pagination
@@ -86,7 +88,7 @@ export default function Dashboard() {
                     <Grid container spacing={3}>
                         {flashcardSets.map((set, index) => (
                             <Grid size={{ xs: 12 }} key={set.id}>
-                                <FlashcardSetElement set={set} index={index} onDelete={onDelete} />
+                                <FlashcardSetElement set={set} topic={topic} onDelete={onDelete} />
                             </Grid>
                         ))}
                     </Grid>

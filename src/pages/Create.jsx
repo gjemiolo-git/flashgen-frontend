@@ -48,6 +48,7 @@ export default function Create() {
             if (response && !response.error && response.success) {
                 setCreated(true)
             }
+            dispatch(setMessage({ success: "Set Created Successfully" }));
         } catch (error) {
             const message = error.response.data.error;
             dispatch(setMessage({ error: message }));
@@ -58,11 +59,7 @@ export default function Create() {
 
     return (
         <Container maxWidth="md">
-            {loading ? (<Spinner />) : created ? (
-                <Typography variant="h4" color="success" sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 2, mt: 2 }}>
-                    Set Created Successfully
-                </Typography>
-            ) : (
+            {loading ? (<Spinner />) : (
                 <>
                     <Typography variant="h4" gutterBottom>
                         Create New Flashcard Set

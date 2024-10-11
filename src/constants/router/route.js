@@ -9,6 +9,7 @@ import Logout from '../../pages/Logout';
 import Library from '../../pages/Library';
 import HomeOld from '../../pages/Home_old';
 import Create from '../../pages/Create';
+import TopicDashboard from '../../pages/TopicDashboard';
 
 export const ROUTES = [
     {
@@ -23,6 +24,11 @@ export const ROUTES = [
             { path: '/privacy', element: <PrivacyPolicy /> },
             { path: '/library', element: <Library /> },
             { path: '/create', element: <Create /> },
+            {
+                path: '/topic/:id',
+                element: <TopicDashboard />
+            },
+
         ]
     },
     {

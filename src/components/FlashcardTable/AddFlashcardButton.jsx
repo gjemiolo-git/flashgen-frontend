@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import { Button, Box, useTheme, CircularProgress, TextField } from '@mui/material';
 import { Add, Refresh } from '@mui/icons-material';
 
-const AddFlashcardButton = ({ onAdd, onFetch }) => {
+const AddFlashcardButton = ({ onAdd, onFetch, isFetching }) => {
     const theme = useTheme();
-    const [isFetching, setIsFetching] = useState(false);
     const [fetchCount, setFetchCount] = useState(1);
 
     const handleFetch = async () => {
-        setIsFetching(true);
         await onFetch(fetchCount);
-        setIsFetching(false);
     };
 
     return (
