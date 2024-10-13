@@ -4,6 +4,7 @@ import {
     Button,
     TextField,
     Paper,
+    Box
 } from '@mui/material';
 
 import Flashcard from './Flashcard';
@@ -52,15 +53,25 @@ function InteractiveDemo() {
             >
                 Generate Demo Cards
             </Button>
-            {demoCards.map((card, index) => (
-                <Flashcard
-                    key={index}
-                    question={card.question}
-                    answer={card.answer}
-                    isFlipped={flippedCards[index]}
-                    onFlip={() => handleCardFlip(index)}
-                />
-            ))}
+            <Box sx={{
+                flexGrow: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                width: '100%',  // Add this
+                height: '100%'  // Add this
+            }}>
+                {demoCards.map((card, index) => (
+                    <Flashcard
+                        key={index}
+                        question={card.question}
+                        answer={card.answer}
+                        isFlipped={flippedCards[index]}
+                        onFlip={() => handleCardFlip(index)}
+                    />
+                ))}
+            </Box>
         </Paper>
     );
 }

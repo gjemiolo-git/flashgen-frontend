@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Pagination } from '@mui/material';
+import { Container, Typography, Pagination, Button } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { getTopicDashboard } from '../api/auth';
 import Spinner from '../components/Spinner';
 import { useDispatch } from 'react-redux';
@@ -74,11 +74,19 @@ export default function TopicDashboard() {
             )}
 
             {flashcardSets.length === 0 ? (
-                <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-                    There are no flashcard sets for this topic yet.
-                </Typography>
+                <>
+                    <Typography variant="subtitle1" sx={{ mt: 8, textAlign: 'center' }}>
+                        There are no flashcard sets for this topic yet.
+                    </Typography>
+                    <Button sx={{ width: '100%', mt: 8 }} variant="contained" color="info" component={Link} to={`/create?tId=${id}`}>
+                        Create Flashcard Set for this Topic
+                    </Button>
+                </>
             ) : (
                 <>
+                    <Button sx={{ width: '100%', mt: 3 }} variant="outlined" color="info" component={Link} to={`/create?tId=${id}`}>
+                        Add Flashcard Set for this Topic
+                    </Button>
                     <Pagination
                         count={totalPages}
                         page={page}

@@ -7,9 +7,10 @@ import About from '../../components/static/About'
 import TermsOfService from '../../components/static/TermsOfService'
 import Logout from '../../pages/Logout';
 import Library from '../../pages/Library';
-import HomeOld from '../../pages/Home_old';
+import Update from '../../pages/Update';
 import Create from '../../pages/Create';
 import TopicDashboard from '../../pages/TopicDashboard';
+import StudyView from '../../pages/StudyView';
 
 export const ROUTES = [
     {
@@ -27,6 +28,14 @@ export const ROUTES = [
             {
                 path: '/topic/:id',
                 element: <TopicDashboard />
+            },
+            {
+                path: '/collection/:id',
+                element: <StudyView />
+            },
+            {
+                path: '/collection/:id/update',
+                element: <Update />
             },
 
         ]

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Paper, Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
@@ -8,11 +8,12 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 const FlashCard = styled(Paper)(({ theme }) => ({
     perspective: '1000px',
-    transition: 'transform 0.6s',
+    transition: 'transform 0.5s',
     transformStyle: 'preserve-3d',
     position: 'relative',
     width: '100%',
-    height: '150px',
+    height: '100%',
+    minHeight: '150px',
     marginBottom: theme.spacing(2),
     cursor: 'pointer',
     boxShadow: theme.palette.mode === 'dark'
@@ -22,6 +23,8 @@ const FlashCard = styled(Paper)(({ theme }) => ({
 
 const CardSide = styled(Box)(({ theme }) => ({
     position: 'absolute',
+    top: 0,
+    left: 0,
     width: '100%',
     height: '100%',
     backfaceVisibility: 'hidden',
@@ -30,7 +33,6 @@ const CardSide = styled(Box)(({ theme }) => ({
     justifyContent: 'center',
     padding: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
-    overflow: 'auto',
 }));
 
 const CardFront = styled(CardSide)(({ theme }) => ({
@@ -47,7 +49,6 @@ const CardBack = styled(CardSide)(({ theme }) => ({
 }));
 
 const CardContent = styled(Typography)(({ theme }) => ({
-    fontSize: 'clamp(14px, 4vw, 24px)',
     textAlign: 'center',
     wordBreak: 'break-word',
     fontWeight: 600,
@@ -55,39 +56,89 @@ const CardContent = styled(Typography)(({ theme }) => ({
     textShadow: theme.palette.mode === 'dark'
         ? '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000'
         : '-1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF',
+    maxWidth: '90%',
+    maxHeight: '90%',
+    overflowY: 'auto',
+    padding: theme.spacing(2),
 }));
 
 const IconWrapper = styled(Box)(({ theme, position }) => ({
     position: 'absolute',
     color: theme.palette.mode === 'dark' ? '#FFFFFF' : '#000000',
-    ...(position === 'topLeft' && { top: theme.spacing(2), left: theme.spacing(2) }),
-    ...(position === 'topRight' && { top: theme.spacing(2), right: theme.spacing(2) }),
-    ...(position === 'bottomLeft' && { bottom: theme.spacing(2), left: theme.spacing(2) }),
-    ...(position === 'bottomRight' && { bottom: theme.spacing(2), right: theme.spacing(2) }),
+    ...(position === 'topLeft' && { top: '2%', left: '2%' }),
+    ...(position === 'topRight' && { top: '2%', right: '2%' }),
+    ...(position === 'bottomLeft' && { bottom: '2%', left: '2%' }),
+    ...(position === 'bottomRight' && { bottom: '2%', right: '2%' }),
     opacity: 0.6,
+    fontSize: 'clamp(16px, 3vw, 24px)',  // Responsive icon size
 }));
 
-function Flashcard({ question, answer, isFlipped, onFlip }) {
+function Flashcard({ question, answer, isFlipped, onFlip, containerHeight }) {
+    const cardRef = useRef(null);
+    const frontContentRef = useRef(null);
+    const backContentRef = useRef(null);
+    const [aspectRatio, setAspectRatio] = useState(1.5);
+    const [fontSize, setFontSize] = useState('16px');
+
+    useEffect(() => {
+        const updateSizes = () => {
+            if (cardRef.current && frontContentRef.current && backContentRef.current) {
+                const cardWidth = cardRef.current.offsetWidth;
+                const cardHeight = cardRef.current.offsetHeight;
+                setAspectRatio(cardWidth / cardHeight);
+
+                const frontLength = question.length;
+                const backLength = answer.length;
+                const maxLength = Math.max(frontLength, backLength);
+
+                // Adjust card size based on content length
+                const baseSize = Math.sqrt(maxLength) * 10; // Adjust this multiplier as needed*
+                const newHeight = Math.max(cardHeight, baseSize);
+                cardRef.current.style.height = `${newHeight}px`;
+
+                // Calculate font size based on card dimensions and content length
+                const newFontSize = Math.min(
+                    cardWidth / Math.sqrt(maxLength),
+                    newHeight / Math.sqrt(maxLength),
+                    32 // Maximum font size
+                );
+                setFontSize(`${newFontSize}px`);
+            }
+        };
+
+        updateSizes();
+        window.addEventListener('resize', updateSizes);
+        return () => window.removeEventListener('resize', updateSizes);
+    }, [question, answer, containerHeight]);
+
     return (
         <FlashCard
+            ref={cardRef}
             onClick={onFlip}
             sx={{
                 transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                aspectRatio: aspectRatio,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                maxWidth: '90%',
+                maxHeight: '90%',
             }}
         >
             <CardFront>
-                <IconWrapper position="topLeft"><QuestionMarkIcon fontSize="small" /></IconWrapper>
-                <IconWrapper position="topRight"><SchoolIcon fontSize="small" /></IconWrapper>
-                <IconWrapper position="bottomLeft"><MenuBookIcon fontSize="small" /></IconWrapper>
-                <IconWrapper position="bottomRight"><QuestionMarkIcon fontSize="small" /></IconWrapper>
-                <CardContent>{question}</CardContent>
+                <IconWrapper position="topLeft"><QuestionMarkIcon /></IconWrapper>
+                <IconWrapper position="topRight"><SchoolIcon /></IconWrapper>
+                <IconWrapper position="bottomLeft"><MenuBookIcon /></IconWrapper>
+                <IconWrapper position="bottomRight"><QuestionMarkIcon /></IconWrapper>
+                <CardContent ref={frontContentRef} style={{ fontSize }}>{question}</CardContent>
             </CardFront>
             <CardBack>
-                <IconWrapper position="topLeft"><LightbulbIcon fontSize="small" /></IconWrapper>
-                <IconWrapper position="topRight"><SchoolIcon fontSize="small" /></IconWrapper>
-                <IconWrapper position="bottomLeft"><MenuBookIcon fontSize="small" /></IconWrapper>
-                <IconWrapper position="bottomRight"><LightbulbIcon fontSize="small" /></IconWrapper>
-                <CardContent>{answer}</CardContent>
+                <IconWrapper position="topLeft"><LightbulbIcon /></IconWrapper>
+                <IconWrapper position="topRight"><SchoolIcon /></IconWrapper>
+                <IconWrapper position="bottomLeft"><MenuBookIcon /></IconWrapper>
+                <IconWrapper position="bottomRight"><LightbulbIcon /></IconWrapper>
+                <CardContent ref={backContentRef} style={{ fontSize }}>{answer}</CardContent>
             </CardBack>
         </FlashCard>
     );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Box, useTheme, CircularProgress, TextField } from '@mui/material';
 import { Add, Refresh } from '@mui/icons-material';
 
-const AddFlashcardButton = ({ onAdd, onFetch, isFetching }) => {
+const AddFlashcardButton = ({ onAdd, onFetch, isFetching, specs }) => {
     const theme = useTheme();
     const [fetchCount, setFetchCount] = useState(1);
 
@@ -47,7 +47,7 @@ const AddFlashcardButton = ({ onAdd, onFetch, isFetching }) => {
                     variant="outlined"
                     startIcon={isFetching ? <CircularProgress size={20} /> : <Refresh />}
                     onClick={handleFetch}
-                    disabled={isFetching}
+                    disabled={isFetching || !specs}
                     sx={{
                         color: theme.palette.secondary.main,
                         '&:hover': {

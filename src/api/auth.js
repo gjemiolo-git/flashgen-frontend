@@ -34,6 +34,9 @@ export const topicCreate = (topicName) =>
 export const flashcardSetCreate = (data) =>
     apiWrapper(() => axios.post(`${API_BASE_URL}/ai/flashcard-sets`, { payload: data }));
 
+export const updateSet = (sId, data) =>
+    apiWrapper(() => axios.put(`${API_BASE_URL}/ai/flashcard-sets/${sId}/update`, { payload: data }));
+
 
 export const fetchNewFlashcards = (data) =>
     apiWrapper(() => axios.post(`${API_BASE_URL}/ai/flashcards`, data));
@@ -52,6 +55,9 @@ export const deleteSet = (sId) =>
 
 export const getTopicList = (page = 1, limit = 15) =>
     apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics`, { params: { page, limit } }));
+
+export const getStudyView = (sId) =>
+    apiWrapper(() => axios.get(`${API_BASE_URL}/ai/flashcard-sets/${sId}`));
 
 export const getTopicDashboard = (id, page = 1, limit = 15) =>
     apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics-dashboard/${id}`, { params: { page, limit } }));

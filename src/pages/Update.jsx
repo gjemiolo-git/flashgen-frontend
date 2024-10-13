@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
-import { getTopicList, flashcardSetCreate } from '../api/auth';
+import { getTopicList, updateSet } from '../api/auth';
 import {
     Autocomplete, Container, Typography, Box, TextField, Chip, Button,
 } from '@mui/material';
@@ -9,9 +9,10 @@ import { useDispatch } from 'react-redux';
 import { setMessage } from '../redux/slices/authSlice';
 import Spinner from '../components/Spinner';
 import ErrorBoundary from './ErrorBoundary';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getStudyView } from '../api/auth';
 
-export default function Create() {
+export default function Update() {
     const methods = useForm({
         defaultValues: {
             name: '',
@@ -19,18 +20,15 @@ export default function Create() {
             flashcards: []
         }
     });
-    const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const queryParams = new URLSearchParams(location.search);
     const { control, register, formState: { errors }, clearErrors, watch, setValue } = methods;
-    const [topicsLoaded, setTopicsLoaded] = useState(false);
+    const [flashcardSet, setFlashcardSet] = useState(null);
     const [topics, setTopics] = useState([]);
-    const topicId = queryParams.get('tId');
+    const [loading, setLoading] = useState(true);
+    const { id } = useParams();
     const watchedTopics = watch('topics');
     const watchedSpecs = watch('specs');
-
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchTopics = async () => {
@@ -38,7 +36,6 @@ export default function Create() {
                 const data = await getTopicList();
                 setTopics(data.topics);
                 setLoading(false);
-                setTopicsLoaded(true);
             } catch (error) {
                 console.log('Failed to fetch topics:', error);
                 dispatch(setMessage({ error: error.data.error }));
@@ -48,31 +45,41 @@ export default function Create() {
 
         fetchTopics();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [watchedTopics]);
+    }, [watchedTopics,]);
 
     useEffect(() => {
-        if (topics && topics.length > 0 && topicId) {
-            console.log('Topic link present');
-            console.log(topics);
-            const desiredTopic = topics.find(t => t.id === parseInt(topicId, 10));
-            console.log(desiredTopic);
-            if (desiredTopic) {
-                setValue('topics', [desiredTopic]);
-            } else {
-                console.log(`No topic found with id ${topicId}`);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [topicsLoaded, topicId]);
+        const fetchForm = async () => {
+            try {
+                console.log(id);
+                const response = await getStudyView(id);
+                const data = await getTopicList();
+                setFlashcardSet(response);
+                setTopics(data.topics);
 
+                // Update form values
+                setValue('name', response.name);
+                setValue('topics', response.topics);
+                setValue('flashcards', response.flashcards);
+
+                setLoading(false);
+            } catch (error) {
+                console.log('Failed to fetch data:', error);
+                dispatch(setMessage({ error: error.data.error }));
+                setLoading(false);
+            }
+        };
+
+        fetchForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, setValue]);
 
     const onSubmit = async (data) => {
         try {
             setLoading(true);
-            const response = await flashcardSetCreate(data);
-            setLoading(false)
+            console.log(data);
+            const response = await updateSet(id, data);
             if (response && !response.error && response.success) {
-                dispatch(setMessage({ success: "Set Created Successfully" }));
+                dispatch(setMessage({ success: "Set Updated Successfully" }));
                 navigate(`/collection/${response.flashcardSetId}`);
             }
         } catch (error) {
@@ -80,6 +87,7 @@ export default function Create() {
             dispatch(setMessage({ error: message }));
         } finally {
             setLoading(false);
+            navigate(`/collection/${id}`);
         }
     };
 
@@ -88,7 +96,7 @@ export default function Create() {
             {loading ? (<Spinner />) : (
                 <>
                     <Typography variant="h4" gutterBottom>
-                        Create New Flashcard Set
+                        Update Flashcard Set
                     </Typography>
                     <FormProvider {...methods}>
                         <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -157,7 +165,7 @@ export default function Create() {
                             </ErrorBoundary>
                             <Box mt={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <Button size="large" type="submit" variant="contained" color="primary">
-                                    Save Flashcard Set
+                                    Update Flashcard Set
                                 </Button>
                             </Box>
                         </form>

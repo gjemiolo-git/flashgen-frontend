@@ -105,7 +105,7 @@ function Home() {
                         <Typography variant="h5" gutterBottom>
                             Interactive Demo
                         </Typography>
-                        <Box sx={{ width: '100%', height: '100%' }}>
+                        <Box sx={{ width: '100%', height: '100%', }}>
                             <InteractiveDemo />
                         </Box>
                         <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>

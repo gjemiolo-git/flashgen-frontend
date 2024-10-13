@@ -5,6 +5,7 @@ import PersonIcon from '@mui/icons-material/Person';
 
 const FlashcardSetElement = ({ set, topic, onDelete }) => {
   const topics = topic?.name || set.topics?.map(t => t.name).join(", ") || "No topics";
+  const updateUrl = `/collection/${set.id}/update`;
   const isCreateSet = set.id === 'create-flashcard-set';
 
   return (
@@ -43,6 +44,11 @@ const FlashcardSetElement = ({ set, topic, onDelete }) => {
             {isCreateSet && (
               <Button variant="contained" component={Link} to="/create">
                 Create Now
+              </Button>
+            )}
+            {set.isCreator && !isCreateSet && (
+              <Button variant="outlined" color="info" component={Link} to={updateUrl}>
+                Edit
               </Button>
             )}
             {set.isCreator && !isCreateSet && (

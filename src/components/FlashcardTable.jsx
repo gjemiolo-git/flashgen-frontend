@@ -103,6 +103,7 @@ export const FlashcardTable = ({ topics, specs }) => {
                     onFetch={handleFetchFlashcard}
                     isFetching
                     ={isFetching}
+                    specs={specs}
                 />
             </TableContainer>
         </Box>
