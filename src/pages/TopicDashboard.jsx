@@ -27,7 +27,6 @@ export default function TopicDashboard() {
             try {
                 const data = await getTopicDashboard(id, page, ITEMS_PER_PAGE);
                 setFlashcardSets(data.flashcardSets);
-                console.log(data);
                 setTopic(data.topics[0]);
                 setTotalPages(data.totalPages);
                 if (page > totalPages) { handlePageChange(1) };

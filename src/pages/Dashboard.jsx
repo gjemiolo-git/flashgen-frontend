@@ -23,7 +23,6 @@ export default function Dashboard() {
         const fetchData = async () => {
             try {
                 const data = await fetchProtectedInfo(page, ITEMS_PER_PAGE);
-                console.log(data);
                 setFlashcardSets(data.flashcardSets);
                 setTotalPages(data.totalPages);
                 setLoading(false);
