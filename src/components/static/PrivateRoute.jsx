@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setMessage } from '../redux/slices/authSlice';
+import { setMessage } from '../../redux/slices/authSlice';
 
 const PrivateRoute = () => {
     const dispatch = useDispatch();

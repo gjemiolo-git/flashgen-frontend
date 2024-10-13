@@ -1,5 +1,5 @@
 import { clearUser, setMessage } from '../redux/slices/authSlice';
-import { onLogout } from '../api/auth';
+import { onLogout } from '../api/all';
 
 export const logoutUser = async (dispatch, navigate, isAuthenticated) => {
     if (!isAuthenticated) {
@@ -9,13 +9,10 @@ export const logoutUser = async (dispatch, navigate, isAuthenticated) => {
         return;
     }
     try {
-        //console.log('Auth', isAuthenticated)
         await onLogout();
         dispatch(clearUser());
-        //dispatch(setMessage({ success: 'Successfully logged out' }));
         navigate('/login');
     } catch (error) {
-        //dispatch(setMessage({ error: 'Logout failed' }));
         console.error('Logout failed', error);
     }
 

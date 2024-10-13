@@ -1,5 +1,3 @@
-// src/utils/validations.js
-
 export const emailValidation = {
     required: "Email is required",
     pattern: {

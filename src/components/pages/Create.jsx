@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
-import { getTopicList, flashcardSetCreate } from '../api/auth';
+import { getTopicList, flashcardSetCreate } from '../../api/all';
 import {
     Autocomplete, Container, Typography, Box, TextField, Chip, Button,
 } from '@mui/material';
-import { FlashcardTable } from '../components/FlashcardTable';
+import { FlashcardTable } from '../FlashcardTable/FlashcardTable';
 import { useDispatch } from 'react-redux';
-import { setMessage } from '../redux/slices/authSlice';
-import Spinner from '../components/Spinner';
+import { setMessage } from '../../redux/slices/authSlice';
+import Spinner from '../layout/Spinner';
 import ErrorBoundary from './ErrorBoundary';
 import { useNavigate, useLocation } from 'react-router-dom';
 

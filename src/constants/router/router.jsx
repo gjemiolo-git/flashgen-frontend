@@ -1,10 +1,10 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import { ROUTES } from "./route";
-import Home from "../../pages/Home";
-import NotFound from "../../pages/NotFound";
+import Home from "../../components/pages/Home";
+import NotFound from "../../components/pages/NotFound";
 import Layout from "../../components/layout/Layout";
-import { PrivateRoute } from "../../components/PrivateRoute";
-import { ProtectedRoute } from "../../components/PrivateRoute";
+import { PrivateRoute } from "../../components/static/PrivateRoute";
+import { ProtectedRoute } from "../../components/static/PrivateRoute";
 
 const routeList = ROUTES.map((routeGroup) => {
     if (routeGroup.private) {

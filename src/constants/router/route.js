@@ -1,16 +1,16 @@
-//import Home from '../../pages/Home';
-import Login from '../../pages/Login';
-import Register from '../../pages/Register';
-import Dashboard from '../../pages/Dashboard';
+//import Home from '../../components/pages/Home';
+import Login from '../../components/pages/Login';
+import Register from '../../components/pages/Register';
+import Dashboard from '../../components/pages/Dashboard';
 import PrivacyPolicy from '../../components/static/PrivacyPolicy'
 import About from '../../components/static/About'
 import TermsOfService from '../../components/static/TermsOfService'
-import Logout from '../../pages/Logout';
-import Library from '../../pages/Library';
-import Update from '../../pages/Update';
-import Create from '../../pages/Create';
-import TopicDashboard from '../../pages/TopicDashboard';
-import StudyView from '../../pages/StudyView';
+import Logout from '../../components/pages/Logout';
+import Library from '../../components/pages/Library';
+import Update from '../../components/pages/Update';
+import Create from '../../components/pages/Create';
+import TopicDashboard from '../../components/pages/TopicDashboard';
+import StudyView from '../../components/pages/StudyView';
 
 export const ROUTES = [
     {

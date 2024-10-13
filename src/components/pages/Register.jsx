@@ -2,12 +2,12 @@ import { useForm } from 'react-hook-form';
 import { Box, Typography, Button, Container, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { emailValidation, passwordValidation, usernameValidation } from '../utils/validations';
-import UsernameField from '../components/input/UsernameField';
-import EmailField from '../components/input/EmailField';
-import PasswordField from '../components/input/PasswordField';
-import { onRegistration } from '../api/auth';
-import { setMessage } from '../redux/slices/authSlice';
+import { emailValidation, passwordValidation, usernameValidation } from '../../utils/validations';
+import UsernameField from '../input/UsernameField';
+import EmailField from '../input/EmailField';
+import PasswordField from '../input/PasswordField';
+import { onRegistration } from '../../api/all';
+import { setMessage } from '../../redux/slices/authSlice';
 
 
 function Register() {

@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import { Box, Typography, Button, Container, Paper, Link } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { emailValidation, passwordValidation } from '../utils/validations';
-import EmailField from '../components/input/EmailField';
-import PasswordField from '../components/input/PasswordField';
-import { setMessage, setUser } from '../redux/slices/authSlice';
-import { onLogin } from '../api/auth';
+import { emailValidation, passwordValidation } from '../../utils/validations';
+import EmailField from '../input/EmailField';
+import PasswordField from '../input/PasswordField';
+import { setMessage, setUser } from '../../redux/slices/authSlice';
+import { onLogin } from '../../api/all';
 
 function Login() {
     const { register, setFocus, handleSubmit, clearErrors, formState: { errors }, setError } = useForm();
