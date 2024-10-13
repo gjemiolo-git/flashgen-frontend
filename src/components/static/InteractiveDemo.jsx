@@ -7,7 +7,7 @@ import {
     Box
 } from '@mui/material';
 
-import Flashcard from './Flashcard';
+import Flashcard from '../FlashcardElements/Flashcard';
 
 function InteractiveDemo() {
     const [topic, setTopic] = useState('');

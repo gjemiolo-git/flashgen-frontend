@@ -6,8 +6,8 @@ import {
     Box
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { getStudyView } from '../api/auth';
-import StudyDashboard from '../components/StudyDashboard';
+import { getStudyView } from '../../api/all';
+import StudyDashboard from '../TopicElements/StudyDashboard';
 
 const StudyView = () => {
     const [flashcardSet, setFlashcardSet] = useState(null);

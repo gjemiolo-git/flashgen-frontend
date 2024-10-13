@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Pagination, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import TopicElement from '../components/TopicElement';
-import { topicCreate, getTopicList, deleteTopic } from '../api/auth';
-import CreateTopicDialog from '../components/CreateTopicDialog';
-import Spinner from '../components/Spinner';
+import TopicElement from '../TopicElements/TopicElement';
+import { topicCreate, getTopicList, deleteTopic } from '../../api/all';
+import CreateTopicDialog from '../TopicElements/CreateTopicDialog';
+import Spinner from '../layout/Spinner';
 import { useDispatch } from 'react-redux';
-import { setMessage } from '../redux/slices/authSlice';
+import { setMessage } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 15;

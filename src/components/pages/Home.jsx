@@ -13,7 +13,7 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import SchoolIcon from '@mui/icons-material/School';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
-import InteractiveDemo from '../components/InteractiveDemo';
+import InteractiveDemo from '../static/InteractiveDemo';
 
 function Home() {
     const theme = useTheme();

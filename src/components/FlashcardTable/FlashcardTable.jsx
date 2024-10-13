@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Table, TableBody, TableContainer, Paper, Box } from '@mui/material';
-import FlashcardTableHeader from './FlashcardTable/FlashcardTableHeader';
-import FlashcardRow from './FlashcardTable/FlashcardRow';
-import AddFlashcardButton from './FlashcardTable/AddFlashcardButton';
-import { fetchNewFlashcards } from '../api/auth';
-import Spinner from './Spinner';
+import FlashcardTableHeader from './FlashcardTableHeader';
+import FlashcardRow from './FlashcardRow';
+import AddFlashcardButton from './AddFlashcardButton';
+import { fetchNewFlashcards } from '../../api/all';
+import Spinner from '../layout/Spinner';
 import { useDispatch } from 'react-redux';
-import { setMessage } from '../redux/slices/authSlice';
+import { setMessage } from '../../redux/slices/authSlice';
 import 'resize-observer-polyfill';
 
 export const FlashcardTable = ({ topics, specs }) => {

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
-import { getTopicList, updateSet } from '../api/auth';
+import { getTopicList, updateSet } from '../../api/all.js';
 import {
     Autocomplete, Container, Typography, Box, TextField, Chip, Button,
 } from '@mui/material';
-import { FlashcardTable } from '../components/FlashcardTable';
+import { FlashcardTable } from '../FlashcardTable/FlashcardTable.jsx';
 import { useDispatch } from 'react-redux';
-import { setMessage } from '../redux/slices/authSlice';
-import Spinner from '../components/Spinner';
+import { setMessage } from '../../redux/slices/authSlice';
+import Spinner from '../layout/Spinner.jsx';
 import ErrorBoundary from './ErrorBoundary';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getStudyView } from '../api/auth';
+import { getStudyView } from '../../api/all';
 
 export default function Update() {
     const methods = useForm({
@@ -23,6 +23,7 @@ export default function Update() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { control, register, formState: { errors }, clearErrors, watch, setValue } = methods;
+    // eslint-disable-next-line
     const [flashcardSet, setFlashcardSet] = useState(null);
     const [topics, setTopics] = useState([]);
     const [loading, setLoading] = useState(true);

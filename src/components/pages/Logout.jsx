@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logoutUser } from '../utils/logout';
-import Spinner from '../components/Spinner';
+import { logoutUser } from '../../utils/logout';
+import Spinner from '../layout/Spinner';
 
 const Logout = () => {
     const dispatch = useDispatch();

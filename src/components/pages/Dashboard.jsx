@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, Pagination } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
-import { fetchProtectedInfo, deleteSet } from '../api/auth';
-import Spinner from '../components/Spinner';
+import { fetchProtectedInfo, deleteSet } from '../../api/all';
+import Spinner from '../layout/Spinner';
 import { useDispatch } from 'react-redux';
-import { setMessage } from '../redux/slices/authSlice';
-import FlashcardSetElement from '../components/FlashcardSetElement';
+import { setMessage } from '../../redux/slices/authSlice';
+import FlashcardSetElement from '../FlashcardElements/FlashcardSetElement';
 
 const ITEMS_PER_PAGE = 5;
 

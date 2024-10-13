@@ -14,7 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FlipIcon from '@mui/icons-material/Flip';
-import Flashcard from './Flashcard';
+import Flashcard from '../FlashcardElements/Flashcard';
 
 const StudyDashboard = ({ flashcardSet }) => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
