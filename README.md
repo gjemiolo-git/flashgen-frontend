@@ -1,46 +1,86 @@
-# Getting Started with Create React App and Redux
+# Flashcard Learning Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This is the frontend for a flashcard learning web application built with React and Redux. It provides an interactive interface for users to create, study, and manage flashcards and topics.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- User authentication (login, register, logout)
+- Dashboard for user's personal content
+- Public library of flashcard sets
+- Creation and management of flashcard sets
+- Topic-based organization of flashcards
+- Study view for learning with flashcards
+- Static pages (About, Privacy Policy, Terms of Service)
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React.js
+- Redux for state management
+- React Router for navigation
+- React Hook Form for form management
+- Material-UI or similar for UI components
+- Axios for API requests
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Structure
 
-### `npm test`
+The application is organized into several main components:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Authentication pages (Login, Register, Logout)
+- Dashboard for authenticated users
+- Library for browsing public flashcard sets
+- Create and Update pages for flashcard sets
+- Topic Dashboard for topic-specific content
+- Study View for active learning sessions
+- Static information pages
 
-### `npm run build`
+## Routes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<details>
+<summary>Public Routes</summary>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `/login`: User login page
+- `/register`: New user registration
+- `/logout`: User logout functionality
+- `/library`: Browse public flashcard sets
+- `/create`: Create new flashcard sets
+- `/topic/:id`: View topic-specific dashboard
+- `/collection/:id`: Study view for a specific flashcard set
+- `/collection/:id/update`: Update a specific flashcard set
+- `/terms`, `/about`, `/privacy`: Static information pages
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+</details>
 
-### `npm run eject`
+<details>
+<summary>Protected Routes</summary>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- `/dashboard`: User's personal dashboard (requires authentication)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+</details>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Setup and Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up environment variables in a `.env` file
+4. Start the development server: `npm start`
 
-## Learn More
+## Environment Variables
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- `REACT_APP_BACKEND_IP`: IP of the backend API
+- `REACT_APP_BACKEND_PORT`: IP of the backend API
+- `REACT_APP_NAME`: Name of the application
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## State Management
+
+The application uses Redux for state management. Key states include:
+- User authentication state
+- Current flashcard set data
+
+## API Integration
+
+The frontend interacts with a backend API for data persistence and retrieval. Ensure the API URL is correctly set in the environment variables.
+
+## Responsive Design
+
+The application is designed to be responsive and work across desktop and mobile devices.
+
