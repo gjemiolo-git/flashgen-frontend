@@ -22,14 +22,18 @@ const apiWrapper = async (apiCall) => {
     }
 };
 
+
+// Auth
 export const onRegistration = (registrationData) =>
     apiWrapper(() => axios.post(`${API_BASE_URL}/auth/register`, registrationData));
 
 export const onLogin = (loginData) =>
     apiWrapper(() => axios.post(`${API_BASE_URL}/auth/login`, loginData));
 
-export const topicCreate = (topicName) =>
-    apiWrapper(() => axios.post(`${API_BASE_URL}/ai/topics`, { name: topicName }));
+export const onLogout = () =>
+    apiWrapper(() => axios.post(`${API_BASE_URL}/auth/logout`));
+
+// Flashcard Sets
 
 export const flashcardSetCreate = (data) =>
     apiWrapper(() => axios.post(`${API_BASE_URL}/ai/flashcard-sets`, { payload: data }));
@@ -37,27 +41,30 @@ export const flashcardSetCreate = (data) =>
 export const updateSet = (sId, data) =>
     apiWrapper(() => axios.put(`${API_BASE_URL}/ai/flashcard-sets/${sId}/update`, { payload: data }));
 
-
-export const fetchNewFlashcards = (data) =>
-    apiWrapper(() => axios.post(`${API_BASE_URL}/ai/flashcards`, data));
-
-export const onLogout = () =>
-    apiWrapper(() => axios.post(`${API_BASE_URL}/auth/logout`));
-
-export const deleteTopic = (tId) =>
-    apiWrapper(() => axios.delete(`${API_BASE_URL}/ai/topics/${tId}`));
-
 export const fetchProtectedInfo = (page = 1, limit = 5) =>
     apiWrapper(() => axios.get(`${API_BASE_URL}/ai/dashboard/flashcard-sets`, { params: { page, limit } }));
-
-export const deleteSet = (sId) =>
-    apiWrapper(() => axios.delete(`${API_BASE_URL}/ai/flashcard-sets/${sId}`));
-
-export const getTopicList = (page = 1, limit = 15) =>
-    apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics`, { params: { page, limit } }));
 
 export const getStudyView = (sId) =>
     apiWrapper(() => axios.get(`${API_BASE_URL}/ai/flashcard-sets/${sId}`));
 
+export const deleteSet = (sId) =>
+    apiWrapper(() => axios.delete(`${API_BASE_URL}/ai/flashcard-sets/${sId}`));
+
+// Topics
+
+export const topicCreate = (topicName) =>
+    apiWrapper(() => axios.post(`${API_BASE_URL}/ai/topics`, { name: topicName }));
+
+export const deleteTopic = (tId) =>
+    apiWrapper(() => axios.delete(`${API_BASE_URL}/ai/topics/${tId}`));
+
+export const getTopicList = (page = 1, limit = 15) =>
+    apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics`, { params: { page, limit } }));
+
 export const getTopicDashboard = (id, page = 1, limit = 15) =>
     apiWrapper(() => axios.get(`${API_BASE_URL}/ai/topics-dashboard/${id}`, { params: { page, limit } }));
+
+
+// AI Flashcards
+export const fetchNewFlashcards = (data) =>
+    apiWrapper(() => axios.post(`${API_BASE_URL}/ai/flashcards`, data));
