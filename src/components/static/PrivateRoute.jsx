@@ -10,7 +10,7 @@ const PrivateRoute = () => {
     const location = useLocation();
 
     if (!user) {
-        dispatch(setMessage({ info: `You need to be logged in to visit ${location}.` }));
+        dispatch(setMessage({ info: `You need to be logged in.` }));
         return <Navigate to='/login' state={{ from: location }} replace />;
     }
 
@@ -24,7 +24,7 @@ const ProtectedRoute = () => {
     const location = useLocation();
 
     if (!user) {
-        dispatch(setMessage({ info: `You need to be logged in to visit ${location}.` }));
+        dispatch(setMessage({ info: `You need to be logged.` }));
         return <Navigate to='/login' state={{ from: location }} replace />;
     }
 
