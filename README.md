@@ -66,6 +66,7 @@ The application is organized into several main components:
 
 ## Environment Variables
 
+- `REACT_APP_BACKEND_URL`: URL of the backend API
 - `REACT_APP_BACKEND_IP`: IP of the backend API
 - `REACT_APP_BACKEND_PORT`: IP of the backend API
 - `REACT_APP_NAME`: Name of the application

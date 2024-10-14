@@ -1,7 +1,8 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-const API_BASE_URL = `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api`;
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` :
+    `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api`;
 
 const apiWrapper = async (apiCall) => {
     try {
