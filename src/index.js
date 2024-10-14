@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js'
 import App from './App.js';
 import { store, persistor } from './redux/store'
-import ErrorBoundary from '../src/pages/ErrorBoundary';
+import ErrorBoundary from '../src/components/pages/ErrorBoundary';
 import 'resize-observer-polyfill';
 
 const container = document.getElementById('root');
