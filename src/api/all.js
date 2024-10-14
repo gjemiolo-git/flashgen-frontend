@@ -5,11 +5,24 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_AP
     `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api`;
 
 const apiWrapper = async (apiCall) => {
+    const timeoutDuration = 15000; // 15 seconds in milliseconds
+
+    const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+            reject({ error: 'Failed to fetch data', timeout: true });
+        }, timeoutDuration);
+    });
+
     try {
-        const response = await apiCall();
+        console.log(`Attempting to fetch using: `, API_BASE_URL);
+        const response = await Promise.race([apiCall(), timeoutPromise]);
         return response.data;
     } catch (error) {
         console.error('API call failed:', error.message);
+        if (error.timeout) {
+            console.error('Request timed out after 15 seconds');
+            return { error: 'Failed to fetch data' };
+        }
         if (error.response) {
             console.error('Error data:', error.response.data);
             console.error('Error status:', error.response.status);
@@ -22,6 +35,7 @@ const apiWrapper = async (apiCall) => {
         throw error;
     }
 };
+
 
 
 // Auth
