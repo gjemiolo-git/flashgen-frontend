@@ -26,6 +26,7 @@ export const FlashcardTable = ({ topics, specs }) => {
     const handleAddFlashcard = (front = '', back = '') => {
         const frontContent = String(front || '');
         const backContent = String(back || '');
+        console.log(frontContent);
 
         append({ frontContent, backContent });
         const newIndex = fields.length;
