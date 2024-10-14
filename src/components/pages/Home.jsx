@@ -14,9 +14,11 @@ import SchoolIcon from '@mui/icons-material/School';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import InteractiveDemo from '../static/InteractiveDemo';
+import { useSelector } from 'react-redux';
 
 function Home() {
     const theme = useTheme();
+    const user = useSelector((state) => state.auth.user) !== null;
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
@@ -49,7 +51,7 @@ function Home() {
                                 variant="contained"
                                 color="primary"
                                 component={RouterLink}
-                                to="/register"
+                                to={user ? "/library" : "/register"}
                                 size="large"
                             >
                                 Get Started
