@@ -24,10 +24,15 @@ export const FlashcardTable = ({ topics, specs }) => {
     const frontInputRefs = useRef([]);
 
     const handleAddFlashcard = (front = '', back = '') => {
-        append({ frontContent: front, backContent: back });
+        const frontContent = String(front || '');
+        const backContent = String(back || '');
+        console.log(frontContent);
+
+        append({ frontContent, backContent });
         const newIndex = fields.length;
         setExpandedRow(newIndex);
     };
+
 
     const handleFetchFlashcard = async (count) => {
         try {

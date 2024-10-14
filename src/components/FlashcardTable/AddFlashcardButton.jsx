@@ -21,7 +21,7 @@ const AddFlashcardButton = ({ onAdd, onFetch, isFetching, specs }) => {
             <Button
                 variant="outlined"
                 startIcon={<Add />}
-                onClick={onAdd}
+                onClick={() => onAdd()}
                 sx={{
                     color: theme.palette.primary.main,
                     '&:hover': {

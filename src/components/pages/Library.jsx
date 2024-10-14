@@ -5,7 +5,7 @@ import TopicElement from '../TopicElements/TopicElement';
 import { topicCreate, getTopicList, deleteTopic } from '../../api/all';
 import CreateTopicDialog from '../TopicElements/CreateTopicDialog';
 import Spinner from '../layout/Spinner';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMessage } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ const ITEMS_PER_PAGE = 15;
 export default function Library() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector((state) => state.auth.user) !== null;
     const [loading, setLoading] = useState(true);
     const [topics, setTopics] = useState([]);
     const [page, setPage] = useState(1);
@@ -72,13 +73,13 @@ export default function Library() {
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                     Topic Library
                 </Typography>
-                <Button
+                {user && <Button
                     variant="contained"
                     onClick={() => setIsCreateDialogOpen(true)}
                     sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
                 >
                     Create New Topic
-                </Button>
+                </Button>}
             </Box>
             {topics.length === 0 ? (
                 <TopicElement

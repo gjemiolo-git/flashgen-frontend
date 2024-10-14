@@ -24,7 +24,6 @@ export const ROUTES = [
             { path: '/about', element: <About /> },
             { path: '/privacy', element: <PrivacyPolicy /> },
             { path: '/library', element: <Library /> },
-            { path: '/create', element: <Create /> },
             {
                 path: '/topic/:id',
                 element: <TopicDashboard />
@@ -45,6 +44,7 @@ export const ROUTES = [
         protected: true,
         routes: [
             { path: '/dashboard', element: <Dashboard /> },
+            { path: '/create', element: <Create /> },
         ]
     },
     {

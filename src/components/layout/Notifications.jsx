@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert, AlertTitle, Snackbar } from '@mui/material';
 import { clearMessage } from '../../redux/slices/authSlice';
 import { styled } from '@mui/material/styles';
-import ErrorBoundary from '../../pages/ErrorBoundary';
+import ErrorBoundary from '../pages/ErrorBoundary';
 
 const Notifications = () => {
     const dispatch = useDispatch();

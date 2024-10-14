@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
 import { getTopicList, updateSet } from '../../api/all.js';
 import {
@@ -22,12 +22,13 @@ export default function Update() {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { control, register, formState: { errors }, clearErrors, watch, setValue } = methods;
+    const { control, formState: { errors }, clearErrors, watch, setValue } = methods;
     // eslint-disable-next-line
     const [flashcardSet, setFlashcardSet] = useState(null);
     const [topics, setTopics] = useState([]);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
+    const specsRef = useRef(null);
     const watchedTopics = watch('topics');
     const watchedSpecs = watch('specs');
 
@@ -51,7 +52,6 @@ export default function Update() {
     useEffect(() => {
         const fetchForm = async () => {
             try {
-                console.log(id);
                 const response = await getStudyView(id);
                 const data = await getTopicList();
                 setFlashcardSet(response);
@@ -61,6 +61,10 @@ export default function Update() {
                 setValue('name', response.name);
                 setValue('topics', response.topics);
                 setValue('flashcards', response.flashcards);
+
+                if (specsRef.current) {
+                    specsRef.current.focus();
+                }
 
                 setLoading(false);
             } catch (error) {
@@ -72,12 +76,11 @@ export default function Update() {
 
         fetchForm();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, setValue]);
+    }, [id]);
 
     const onSubmit = async (data) => {
         try {
             setLoading(true);
-            console.log(data);
             const response = await updateSet(id, data);
             if (response && !response.error && response.success) {
                 dispatch(setMessage({ success: "Set Updated Successfully" }));
@@ -101,14 +104,21 @@ export default function Update() {
                     </Typography>
                     <FormProvider {...methods}>
                         <form onSubmit={methods.handleSubmit(onSubmit)}>
-                            <TextField
-                                fullWidth
-                                label="Flashcard Set Name"
-                                {...register("name", { required: "Name is required" })}
-                                sx={{ mb: 3 }}
-                                error={!!errors.name}
-                                helperText={errors.name?.message}
-                                margin="normal"
+                            <Controller
+                                name="name"
+                                control={control}
+                                rules={{ required: "Name is required" }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Flashcard Set Name"
+                                        error={!!error}
+                                        helperText={error?.message}
+                                        sx={{ mb: 3 }}
+                                        margin="normal"
+                                    />
+                                )}
                             />
 
                             <Controller
@@ -148,17 +158,24 @@ export default function Update() {
                                 )}
                             />
 
-                            <TextField
-                                fullWidth
-                                multiline
-                                minRows={1}
-                                maxRows={6}
-                                label="Quiz Specification"
-                                {...register("specs")}
-                                sx={{ mb: 3 }}
-                                error={!!errors.specs}
-                                helperText={errors.specs?.message}
-                                margin="normal"
+                            <Controller
+                                name="specs"
+                                control={control}
+                                render={({ field, fieldState: { error } }) => (
+                                    <TextField
+                                        {...field}
+                                        inputRef={specsRef}
+                                        fullWidth
+                                        multiline
+                                        minRows={1}
+                                        maxRows={6}
+                                        label="Quiz Specification"
+                                        error={!!error}
+                                        helperText={error?.message}
+                                        sx={{ mb: 3 }}
+                                        margin="normal"
+                                    />
+                                )}
                             />
 
                             <ErrorBoundary>
