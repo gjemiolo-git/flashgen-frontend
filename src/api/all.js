@@ -14,7 +14,7 @@ const apiWrapper = async (apiCall) => {
     });
 
     try {
-        console.log(`Attempting to fetch using: `, API_BASE_URL);
+        //console.log(`Attempting to fetch using: `, API_BASE_URL);
         const response = await Promise.race([apiCall(), timeoutPromise]);
         return response.data;
     } catch (error) {
