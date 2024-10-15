@@ -52,7 +52,6 @@ export default function Create() {
 
     useEffect(() => {
         if (topics && topics.length > 0 && topicId) {
-            console.log(topics);
             const desiredTopic = topics.find(t => t.id === parseInt(topicId, 10));
             if (desiredTopic) {
                 setValue('topics', [desiredTopic]);
