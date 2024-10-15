@@ -35,7 +35,7 @@ export default function Create() {
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const data = await getTopicList();
+                const data = await getTopicList(1, 300);
                 setTopics(data.topics);
                 setLoading(false);
                 setTopicsLoaded(true);
@@ -52,6 +52,7 @@ export default function Create() {
 
     useEffect(() => {
         if (topics && topics.length > 0 && topicId) {
+            console.log(topics);
             const desiredTopic = topics.find(t => t.id === parseInt(topicId, 10));
             if (desiredTopic) {
                 setValue('topics', [desiredTopic]);

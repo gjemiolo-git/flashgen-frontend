@@ -35,7 +35,7 @@ export default function Update() {
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const data = await getTopicList();
+                const data = await getTopicList(1, 300);
                 setTopics(data.topics);
                 setLoading(false);
             } catch (error) {
