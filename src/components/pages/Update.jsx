@@ -169,7 +169,7 @@ export default function Update() {
                                         multiline
                                         minRows={1}
                                         maxRows={6}
-                                        label="Quiz Specification"
+                                        label="AI Specification"
                                         error={!!error}
                                         helperText={error?.message}
                                         sx={{ mb: 3 }}

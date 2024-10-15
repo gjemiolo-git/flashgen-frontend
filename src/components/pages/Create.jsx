@@ -141,7 +141,7 @@ export default function Create() {
                                 multiline
                                 minRows={1}
                                 maxRows={6}
-                                label="Quiz Specification"
+                                label="AI Specification"
                                 {...register("specs")}
                                 sx={{ mb: 3 }}
                                 error={!!errors.specs}
