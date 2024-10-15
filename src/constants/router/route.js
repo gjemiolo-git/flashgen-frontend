@@ -46,6 +46,7 @@ export const ROUTES = [
                 path: '/collection/:id/update',
                 element: <Update />
             },
+
         ]
     },
     {

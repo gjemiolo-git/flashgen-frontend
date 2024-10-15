@@ -5,7 +5,8 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_AP
     `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api`;
 
 const apiWrapper = async (apiCall) => {
-    const timeoutDuration = 120 * 1000; // 120 seconds in milliseconds due to free backend startup time(~50s)
+const timeoutDuration = 120 * 1000; // 120 seconds in milliseconds due to free backend startup time(~50s)
+
 
     const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => {
@@ -35,8 +36,6 @@ const apiWrapper = async (apiCall) => {
         throw error;
     }
 };
-
-
 
 // Auth
 export const onRegistration = (registrationData) =>

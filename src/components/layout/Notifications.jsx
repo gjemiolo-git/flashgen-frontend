@@ -4,6 +4,7 @@ import { Alert, AlertTitle, Snackbar, useMediaQuery } from '@mui/material';
 import { clearMessage } from '../../redux/slices/authSlice';
 import { styled, useTheme } from '@mui/material/styles';
 
+
 const Notifications = () => {
     const dispatch = useDispatch();
     const message = useSelector((state) => state.auth.message);
