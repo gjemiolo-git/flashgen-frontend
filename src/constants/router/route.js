@@ -32,10 +32,7 @@ export const ROUTES = [
                 path: '/collection/:id',
                 element: <StudyView />
             },
-            {
-                path: '/collection/:id/update',
-                element: <Update />
-            },
+
 
         ]
     },
@@ -45,6 +42,10 @@ export const ROUTES = [
         routes: [
             { path: '/dashboard', element: <Dashboard /> },
             { path: '/create', element: <Create /> },
+            {
+                path: '/collection/:id/update',
+                element: <Update />
+            },
         ]
     },
     {

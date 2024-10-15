@@ -42,10 +42,8 @@ The application is organized into several main components:
 - `/register`: New user registration
 - `/logout`: User logout functionality
 - `/library`: Browse public flashcard sets
-- `/create`: Create new flashcard sets
 - `/topic/:id`: View topic-specific dashboard
 - `/collection/:id`: Study view for a specific flashcard set
-- `/collection/:id/update`: Update a specific flashcard set
 - `/terms`, `/about`, `/privacy`: Static information pages
 
 </details>
@@ -54,6 +52,8 @@ The application is organized into several main components:
 <summary>Protected Routes</summary>
 
 - `/dashboard`: User's personal dashboard (requires authentication)
+- `/create`: Create new flashcard sets (requires authentication)
+- `/collection/:id/update`: Update a specific flashcard set (requires authentication)
 
 </details>
 
