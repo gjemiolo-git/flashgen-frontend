@@ -51,7 +51,7 @@ export default function Library() {
     const handleCreateTopic = async (topicName) => {
         try {
             const res = await topicCreate(topicName);
-            dispatch(setMessage({ success: res.success }));
+            dispatch(setMessage({ success: res.message }));
 
             const data = await getTopicList(1, ITEMS_PER_PAGE);
             setTopics(data.topics);
