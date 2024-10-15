@@ -1,13 +1,16 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Alert, AlertTitle, Snackbar } from '@mui/material';
+import { Alert, AlertTitle, Snackbar, useMediaQuery } from '@mui/material';
 import { clearMessage } from '../../redux/slices/authSlice';
-import { styled } from '@mui/material/styles';
-import ErrorBoundary from '../pages/ErrorBoundary';
+import { styled, useTheme } from '@mui/material/styles';
+
 
 const Notifications = () => {
     const dispatch = useDispatch();
     const message = useSelector((state) => state.auth.message);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     if (!message) return null;
     const { success, info, error, warning } = message;
 
@@ -18,8 +21,12 @@ const Notifications = () => {
         dispatch(clearMessage());
     };
 
-    const StyledAlert = styled(Alert)(() => ({
-        width: '100%'
+    const StyledAlert = styled(Alert)(({ theme }) => ({
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            minWidth: '300px',
+            maxWidth: '600px',
+        },
     }));
 
     const renderAlert = () => {
@@ -53,12 +60,20 @@ const Notifications = () => {
     const isOpen = Boolean(success || info || error || warning);
 
     return (
-        <ErrorBoundary>
-            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center', }} sx={{ width: '33%' }}
-                open={isOpen} autoHideDuration={4000} onClose={handleClose}>
-                {renderAlert()}
-            </Snackbar>
-        </ErrorBoundary>
+        <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={isOpen}
+            autoHideDuration={4000}
+            onClose={handleClose}
+            sx={{
+                width: isMobile ? '100%' : 'auto',
+                '& .MuiSnackbarContent-root': {
+                    width: '100%',
+                },
+            }}
+        >
+            {renderAlert()}
+        </Snackbar>
     );
 };
 

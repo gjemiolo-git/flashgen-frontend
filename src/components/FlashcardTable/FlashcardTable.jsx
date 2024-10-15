@@ -49,7 +49,7 @@ export const FlashcardTable = ({ topics, specs }) => {
             }
             console.log(response.flashcards);
         } catch (error) {
-            dispatch(setMessage({ error: error.response?.data?.error || 'Failed to delete topic' }));
+            dispatch(setMessage({ error: error.response?.data?.error || 'Failed to fetch flashcards' }));
         } finally {
             setIsFetching(false);
         }

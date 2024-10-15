@@ -5,7 +5,8 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_AP
     `${process.env.REACT_APP_BACKEND_IP}:${process.env.REACT_APP_BACKEND_PORT}/api`;
 
 const apiWrapper = async (apiCall) => {
-    const timeoutDuration = 15000; // 15 seconds in milliseconds
+const timeoutDuration = 120 * 1000; // 120 seconds in milliseconds due to free backend startup time(~50s)
+
 
     const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => {
@@ -18,9 +19,9 @@ const apiWrapper = async (apiCall) => {
         const response = await Promise.race([apiCall(), timeoutPromise]);
         return response.data;
     } catch (error) {
-        console.error('API call failed:', error.message);
+        console.error('API call failed:', { error: error.message });
         if (error.timeout) {
-            console.error('Request timed out after 15 seconds');
+            console.error(`Request timed out after ${timeoutDuration / 1000} seconds`);
             return { error: 'Failed to fetch data' };
         }
         if (error.response) {
@@ -35,8 +36,6 @@ const apiWrapper = async (apiCall) => {
         throw error;
     }
 };
-
-
 
 // Auth
 export const onRegistration = (registrationData) =>

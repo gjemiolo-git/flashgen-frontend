@@ -50,8 +50,9 @@ export default function Library() {
 
     const handleCreateTopic = async (topicName) => {
         try {
-            await topicCreate(topicName);
-            // Refresh the topic list after creating a new topic
+            const res = await topicCreate(topicName);
+            dispatch(setMessage({ success: res.message }));
+
             const data = await getTopicList(1, ITEMS_PER_PAGE);
             setTopics(data.topics);
             setTotalPages(data.totalPages);

@@ -35,7 +35,7 @@ export default function Create() {
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const data = await getTopicList();
+                const data = await getTopicList(1, 300);
                 setTopics(data.topics);
                 setLoading(false);
                 setTopicsLoaded(true);
@@ -141,7 +141,7 @@ export default function Create() {
                                 multiline
                                 minRows={1}
                                 maxRows={6}
-                                label="Quiz Specification"
+                                label="AI Specification"
                                 {...register("specs")}
                                 sx={{ mb: 3 }}
                                 error={!!errors.specs}

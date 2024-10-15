@@ -19,7 +19,7 @@ const StudyView = () => {
         const fetchFlashcardSet = async () => {
             try {
                 const response = await getStudyView(id);
-                console.log(response);
+                //console.log(response);
                 setFlashcardSet(response);
                 setLoading(false);
             } catch (err) {

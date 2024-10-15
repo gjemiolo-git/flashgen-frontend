@@ -35,7 +35,7 @@ export default function Update() {
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const data = await getTopicList();
+                const data = await getTopicList(1, 300);
                 setTopics(data.topics);
                 setLoading(false);
             } catch (error) {
@@ -169,7 +169,7 @@ export default function Update() {
                                         multiline
                                         minRows={1}
                                         maxRows={6}
-                                        label="Quiz Specification"
+                                        label="AI Specification"
                                         error={!!error}
                                         helperText={error?.message}
                                         sx={{ mb: 3 }}
